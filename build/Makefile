@@ -25,43 +25,29 @@ all: world Makefile
 clean: 
 	rm *.o world
 
-world: world.o ../physics/ode.o ../entity/entity.o ../entity/geometry.o ../entity/plane.o ../entity/box.o ../renderer/renderer.o ../utils/utils.o
-	$(CC) $(GLFW) -o world *.o ../physics/ode.o ../entity/entity.o ../entity/geometry.o ../entity/plane.o ../entity/box.o ../renderer/renderer.o ../utils/utils.o $(GLFW2) $(INCLUDELOCAL) $(LIBOPT)  
+world: world.o ode.o entity.o geometry.o plane.o box.o renderer.o utils.o
+	$(CC) $(GLFW) -o world *.o $(GLFW2) $(INCLUDELOCAL) $(LIBOPT)  
 
-../entity/plane.o: ../entity/Plane.h ../entity/Plane.cpp ../entity/Geometry.cpp
-	cd ../entity; \
-		$(CC) -c Plane.cpp -o plane.o $(LIBOPT) $(INCLUDELOCAL)
-	cd ../world;
+plane.o: ../src/entity/Plane.h ../src/entity/Plane.cpp ../src/entity/Geometry.cpp
+	$(CC) -c ../src/entity/Plane.cpp -o plane.o $(LIBOPT) $(INCLUDELOCAL)
 
-../renderer/renderer.o: ../entity/Entity.h ../entity/Geometry.h ../renderer/Renderer.cpp ../renderer/Renderer.h ../entity/Box.h ../entity/Plane.h ../utils/utils.h
-	cd ../renderer; \
-	$(CC) -c Renderer.cpp -o renderer.o $(LIBOPT) $(INCLUDELOCAL)
-	cd ../world;
+renderer.o: ../src/entity/Entity.h ../src/entity/Geometry.h ../src/renderer/Renderer.cpp ../src/renderer/Renderer.h ../src/entity/Box.h ../src/entity/Plane.h ../src/utils/utils.h
+	$(CC) -c ../src/renderer/Renderer.cpp -o renderer.o $(LIBOPT) $(INCLUDELOCAL)
 
-../physics/ode.o: ../physics/ODEWrapper.h ../physics/ODEWrapper.cpp ../math/VECTOR.h
-	cd ../physics; \
-	$(CC) -c ODEWrapper.cpp -o ode.o $(LIBOPT) $(INCLUDELOCAL)
-	cd ../world;
+ode.o: ../src/physics/ODEWrapper.h ../src/physics/ODEWrapper.cpp ../src/math/VECTOR.h
+	$(CC) -c ../src/physics/ODEWrapper.cpp -o ode.o $(LIBOPT) $(INCLUDELOCAL)
 
-../entity/entity.o: ../entity/Entity.h ../Entity/Entity.cpp  ../utils/utils.h
-	cd ../entity; \
-	$(CC) -c Entity.cpp -o entity.o $(LIBOPT) $(INCLUDELOCAL)
-	cd ../world;
+entity.o: ../src/entity/Entity.h ../src/Entity/Entity.cpp  ../src/utils/utils.h
+	$(CC) -c ../src/entity/Entity.cpp -o entity.o $(LIBOPT) $(INCLUDELOCAL)
 
-../entity/geometry.o: ../entity/Geometry.h ../entity/Geometry.cpp
-	cd ../entity; \
-	$(CC) -c Geometry.cpp -o geometry.o $(LIBOPT) $(INCLUDELOCAL)
-	cd ../world;
+geometry.o: ../src/entity/Geometry.h ../src/entity/Geometry.cpp
+	$(CC) -c ../src/entity/Geometry.cpp -o geometry.o $(LIBOPT) $(INCLUDELOCAL)
 
-../entity/box.o: ../entity/Box.h ../entity/Box.cpp ../entity/Geometry.h
-	cd ../entity; \
-	$(CC) -c Box.cpp -o box.o $(LIBOPT) $(INCLUDELOCAL)
-	cd ../world;
+box.o: ../src/entity/Box.h ../src/entity/Box.cpp ../src/entity/Geometry.h
+	$(CC) -c ../src/entity/Box.cpp -o box.o $(LIBOPT) $(INCLUDELOCAL)
 
-../utils/utils.o: ../utils/utils.h ../utils/utils.cpp
-	cd ../utils; \
-	$(CC) -c utils.cpp -o utils.o $(LIBOPT) $(INCLUDELOCAL)
-	cd ../world;
+utils.o: ../src/utils/utils.h ../src/utils/utils.cpp
+	$(CC) -c ../src/utils/utils.cpp -o utils.o $(LIBOPT) $(INCLUDELOCAL)
 
-world.o: world.h world.cpp ../math/VECTOR.h ../entity/entity.h ../physics/ODEWrapper.h
-	$(CC) -c World.cpp $(LIBOPT) $(INCLUDELOCAL)
+world.o: ../src/world/world.h ../src/world/world.cpp ../src/math/VECTOR.h ../src/entity/entity.h ../src/physics/ODEWrapper.h
+	$(CC) -c ../src/world/World.cpp $(LIBOPT) $(INCLUDELOCAL)
