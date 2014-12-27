@@ -4,9 +4,9 @@
 
 #include <vector>
 
-#include "entity.h"
-#include "../math/VECTOR.h"
-#include "../utils/utils.h"
+#include "entity/entity.h"
+#include "math/VECTOR.h"
+#include "utils/utils.h"
 
 struct Entity::impl
 {

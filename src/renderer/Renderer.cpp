@@ -13,13 +13,13 @@
 
 #include <vector>
 
-#include "Renderer.h"
-#include "../math/VECTOR.h"
-#include "../entity/Entity.h"
-#include "../entity/Box.h"
-#include "../entity/Plane.h"
-#include "../entity/Geometry.h"
-#include "../utils/utils.h"
+#include "renderer/Renderer.h"
+#include "math/VECTOR.h"
+#include "entity/Entity.h"
+#include "entity/Box.h"
+#include "entity/Plane.h"
+#include "entity/Geometry.h"
+#include "utils/utils.h"
 
 struct Renderer::impl
 {

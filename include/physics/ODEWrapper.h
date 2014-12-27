@@ -1,7 +1,7 @@
 #ifndef ODEWRAPPER_H
 #define ODEWRAPPER_H
 
-#include "../math/VECTOR.h"
+#include "math/VECTOR.h"
 
 class ODEWrapper
 {

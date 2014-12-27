@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "../math/VECTOR.h"
+#include "math/VECTOR.h"
 
 class Geometry;
 

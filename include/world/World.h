@@ -1,7 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "../math/VECTOR.h"
+#include "math/VECTOR.h"
 
 class Entity;
 

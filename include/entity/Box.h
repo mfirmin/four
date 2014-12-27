@@ -1,8 +1,8 @@
 #ifndef BOX_H
 #define BOX_H 
 
-#include "../math/VECTOR.h"
-#include "Geometry.h"
+#include "math/VECTOR.h"
+#include "entity/Geometry.h"
 
 class Box : public Geometry
 {

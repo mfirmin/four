@@ -4,7 +4,7 @@
 
 #include <vector>
 
-#include "Box.h"
+#include "entity/Box.h"
 
 struct Box::impl
 {

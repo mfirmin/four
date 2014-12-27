@@ -2,7 +2,7 @@
 #define UTILS_H
 
 #include <math.h>
-#include "../math/VECTOR.h"
+#include "math/VECTOR.h"
 
 namespace utils
 {
