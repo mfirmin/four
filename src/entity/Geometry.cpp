@@ -4,9 +4,9 @@
 
 #include <vector>
 
-#include "../math/VECTOR.h"
+#include "math/VECTOR.h"
 
-#include "Geometry.h"
+#include "entity/Geometry.h"
 
 struct Geometry::impl
 {

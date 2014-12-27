@@ -10,8 +10,8 @@
 
 #include <vector>
 
-#include "ODEWrapper.h"
-#include "../math/VECTOR.h"
+#include "physics/ODEWrapper.h"
+#include "math/VECTOR.h"
 
 struct ODEWrapper::impl
 {

@@ -38,4 +38,4 @@ $(TARGET): $(OBJECTS)
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)
 	@mkdir -p $(BUILDDIR)
 	@mkdir -p $(dir $@)
-	@echo " $(CC) -c -o $@ $<"; $(CC) -c -o $@ $<
+	@echo " $(CC) -c -o $@ $< $(INC)"; $(CC) -c -o $@ $< $(INC)

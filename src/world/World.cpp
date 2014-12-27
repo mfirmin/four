@@ -14,15 +14,15 @@
 #include <sys/time.h>
 #endif
 
-#include "world.h"
-#include "../entity/Geometry.h"
-#include "../entity/Box.h"
-#include "../entity/Plane.h"
+#include "world/world.h"
+#include "entity/Geometry.h"
+#include "entity/Box.h"
+#include "entity/Plane.h"
 
-#include "../math/VECTOR.h"
-#include "../physics/ODEWrapper.h"
-#include "../entity/Entity.h"
-#include "../renderer/Renderer.h"
+#include "math/VECTOR.h"
+#include "physics/ODEWrapper.h"
+#include "entity/Entity.h"
+#include "renderer/Renderer.h"
 
 
 #ifdef __APPLE__

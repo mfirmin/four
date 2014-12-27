@@ -2,8 +2,8 @@
 #define PLANE_H 
 
 #include <vector>
-#include "../math/VECTOR.h"
-#include "Geometry.h"
+#include "math/VECTOR.h"
+#include "entity/Geometry.h"
 
 class Plane : public Geometry
 {

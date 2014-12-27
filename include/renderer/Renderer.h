@@ -1,7 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H 
 
-#include "../math/VECTOR.h"
+#include "math/VECTOR.h"
 
 class Entity;
 
