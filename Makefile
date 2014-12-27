@@ -13,7 +13,6 @@ SRCEXT=cpp
 SOURCES= $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS= $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 
-INCLUDELOCAL = -I/usr/local/include -O3 
 ifeq ($(UNAME), Darwin)
 	LDFLAGS = -L/opt/X11/lib -L/usr/local/lib -lGLU -lGL -lGLC -lm -lode
 endif
