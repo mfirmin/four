@@ -11,7 +11,7 @@
 #include <vector>
 
 #include "physics/ODEWrapper.h"
-#include "math/VECTOR.h"
+#include "vmath.h"
 
 struct ODEWrapper::impl
 {
@@ -23,7 +23,7 @@ struct ODEWrapper::impl
     std::vector<dBodyID> bodies;
     std::vector<dJointID> joints;
 
-    dBodyID addBody(ODEWrapper*, dGeomID&, VECTOR, VECTOR, const float*, VECTOR);
+    dBodyID addBody(ODEWrapper*, dGeomID&, Vector3f, Vector3f, const float*, Vector3f);
 
     dBodyID getBodyIDFromID(int i) { return bodies.at(i); }
 
@@ -59,7 +59,7 @@ int ODEWrapper::init()
 
 }
 
-dBodyID ODEWrapper::impl::addBody(ODEWrapper*, dGeomID&, VECTOR pos, VECTOR vel, const float* ang, VECTOR w)
+dBodyID ODEWrapper::impl::addBody(ODEWrapper*, dGeomID&, Vector3f pos, Vector3f vel, const float* ang, Vector3f w)
 {
     dBodyID id = dBodyCreate(world);
     dBodySetPosition(id, pos.x, pos.y, pos.z);
@@ -91,14 +91,14 @@ dBodyID ODEWrapper::impl::addBody(ODEWrapper*, dGeomID&, VECTOR pos, VECTOR vel,
     return id;
 }
 
-int ODEWrapper::addCube(VECTOR pos, float sides, VECTOR vel0, const float* ang0, VECTOR ang_vel0, float mass)
+int ODEWrapper::addCube(Vector3f pos, float sides, Vector3f vel0, const float* ang0, Vector3f ang_vel0, float mass)
 {
 
-    return addBox(pos, VECTOR(sides, sides, sides), vel0, ang0, ang_vel0, mass);
+    return addBox(pos, Vector3f(sides, sides, sides), vel0, ang0, ang_vel0, mass);
 
 }
 
-int ODEWrapper::addBox(VECTOR pos, VECTOR sides, VECTOR vel0, const float* ang0, VECTOR ang_vel0, float mass)
+int ODEWrapper::addBox(Vector3f pos, Vector3f sides, Vector3f vel0, const float* ang0, Vector3f ang_vel0, float mass)
 {
     dMass m;
 	dMassSetBoxTotal(&m, mass, sides.x, sides.y, sides.z);
@@ -115,7 +115,7 @@ int ODEWrapper::addBox(VECTOR pos, VECTOR sides, VECTOR vel0, const float* ang0,
 
 }
 
-int ODEWrapper::addPlane(VECTOR a, VECTOR b)
+int ODEWrapper::addPlane(Vector3f a, Vector3f b)
 {
     dReal dx = b.x - a.x, dy = b.y - a.y; 
     dReal norm = sqrt(dx*dx + dy*dy);
@@ -126,7 +126,7 @@ int ODEWrapper::addPlane(VECTOR a, VECTOR b)
     return 0;          
 }
 
-int addJoint(VECTOR pos, float theta=0, float dTheta=0)
+int addJoint(Vector3f pos, float theta=0, float dTheta=0)
 {
     std::cout << "not yet implemented" << std::endl;
     return -1;
@@ -182,10 +182,10 @@ void nearCallback(void *data, dGeomID o1, dGeomID o2)
 	}
 }
 
-VECTOR ODEWrapper::getBodyPositionFromID(int id)
+Vector3f ODEWrapper::getBodyPositionFromID(int id)
 {
     const dReal* pos = dBodyGetPosition(pimpl->getBodyIDFromID(id));
-    return VECTOR(pos[0], pos[1], pos[2]);
+    return Vector3f(pos[0], pos[1], pos[2]);
 }
 
 const float* ODEWrapper::getBodyRotationFromID(int id)
@@ -215,8 +215,8 @@ int main(int argc, char** argv)
     ODEWrapper* phys = new ODEWrapper();
     phys->init();
 
-    int box1 = phys->addCube(VECTOR(0,10,0), 1, VECTOR(0,0,0), 0, 0, 10);
-    phys->addCube(VECTOR(0,15,0), 1, VECTOR(0,0,0), 0, 0, 10);
+    int box1 = phys->addCube(Vector3f(0,10,0), 1, Vector3f(0,0,0), 0, 0, 10);
+    phys->addCube(Vector3f(0,15,0), 1, Vector3f(0,0,0), 0, 0, 10);
 
 
     while (true)

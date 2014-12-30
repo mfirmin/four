@@ -19,7 +19,7 @@
 #include "entity/Box.h"
 #include "entity/Plane.h"
 
-#include "math/VECTOR.h"
+#include "vmath.h"
 #include "physics/ODEWrapper.h"
 #include "entity/Entity.h"
 #include "renderer/Renderer.h"
@@ -76,7 +76,7 @@ int World::init()
 
 }
 
-int World::addPointLight(VECTOR pos)
+int World::addPointLight(Vector3f pos)
 {
     if (pimpl->renderer.addPointLight(pos) != 0)
     {
@@ -195,20 +195,20 @@ int main(int argc, char** argv)
 
     world->init();
 
-    world->addPointLight(VECTOR(10,10,10));
+    world->addPointLight(Vector3f(10,10,10));
 
-    Geometry* g = new Box(VECTOR(1,1,1));
+    Geometry* g = new Box(Vector3f(1,1,1));
 
-    Entity* e = new Entity(g, VECTOR(0,10,0), VECTOR(0,0,0), VECTOR(-.7, 0, 0));
-    e->setColor(VECTOR(1,.3,.3));
+    Entity* e = new Entity(g, Vector3f(0,10,0), Vector3f(0,0,0), Vector3f(-.7, 0, 0));
+    e->setColor(Vector3f(1,.3,.3));
 
-    Entity* e2 = new Entity(new Box(VECTOR(2,1,1)), VECTOR(1,15,0));
-    e2->setColor(VECTOR(0,.4,.7));
+    Entity* e2 = new Entity(new Box(Vector3f(2,1,1)), Vector3f(1,15,0));
+    e2->setColor(Vector3f(0,.4,.7));
 
     world->addEntity(e);
     world->addEntity(e2);
 
-    Geometry* ground = new Plane(VECTOR(-50, -1, 0), VECTOR(50, -1, 0));
+    Geometry* ground = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
     Entity* groundEntity  = new Entity(ground);
 
     world->addEntity(groundEntity);

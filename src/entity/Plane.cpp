@@ -2,19 +2,17 @@
 #include <stdlib.h>
 #include <iostream>
 
-#include <vector>
-
 #include "entity/Plane.h"
 
 struct Plane::impl
 {
 
-    VECTOR A;
-    VECTOR B;
+    Vector3f A;
+    Vector3f B;
     
 };
 
-Plane::Plane(VECTOR a, VECTOR b) 
+Plane::Plane(Vector3f a, Vector3f b) 
 {
     pimpl = new impl();
     pimpl->A = a;
@@ -26,9 +24,9 @@ int Plane::init()
     return 0;
 }
 
-std::vector<VECTOR> Plane::getAsLine()
+std::vector<Vector3f> Plane::getAsLine()
 {
-    std::vector<VECTOR> ret = std::vector<VECTOR>();
+    std::vector<Vector3f> ret = std::vector<Vector3f>();
 
     ret.push_back(pimpl->A);
     ret.push_back(pimpl->B);
@@ -36,22 +34,22 @@ std::vector<VECTOR> Plane::getAsLine()
     return ret;
 }
 
-VECTOR Plane::getB()
+Vector3f Plane::getB()
 {
     return pimpl->B;
 
 }
-VECTOR Plane::getA()
+Vector3f Plane::getA()
 {
     return pimpl->A;
 }
 
-void Plane::setA(VECTOR a)
+void Plane::setA(Vector3f a)
 {
     pimpl->A = a;
 }
 
-void Plane::setB(VECTOR b)
+void Plane::setB(Vector3f b)
 {
     pimpl->B  = b;
 }

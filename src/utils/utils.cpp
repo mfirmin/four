@@ -22,7 +22,7 @@ namespace utils
 
     }
 
-    void RFromEulerAngles(float* R, VECTOR angles)
+    void RFromEulerAngles(float* R, Vector3f angles)
     {
 
         float cosa = cos(angles.x), cosb = cos(angles.y), cosc = cos(angles.z);
@@ -40,7 +40,7 @@ namespace utils
 
     }
 
-    void setMFromRAndP(float* M, const float* R, VECTOR pos) 
+    void setMFromRAndP(float* M, const float* R, Vector3f pos) 
     {
         M[0] = R[0]; M[4] = R[3]; M[8] =  R[6];  M[12] = pos.x;
         M[1] = R[1]; M[5] = R[4]; M[9] =  R[7];  M[13] = pos.y;

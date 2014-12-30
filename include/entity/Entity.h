@@ -1,7 +1,7 @@
 #ifndef ENTITY_H
 #define ENTITY_H
 
-#include "math/VECTOR.h"
+#include "vmath.h"
 
 class Geometry;
 
@@ -9,21 +9,21 @@ class Entity
 {
     public:
 
-        Entity(Geometry*, VECTOR p=VECTOR(0,0,0), VECTOR v=VECTOR(0,0,0), VECTOR r=VECTOR(0,0,0), VECTOR w=VECTOR(0,0,0));
+        Entity(Geometry*, Vector3f p=Vector3f(0,0,0), Vector3f v=Vector3f(0,0,0), Vector3f r=Vector3f(0,0,0), Vector3f w=Vector3f(0,0,0));
 
         int init();
 
 
         // Physical Properties
 
-        VECTOR getPosition();
-        void setPosition(VECTOR);
-        VECTOR getVelocity();
-        void setVelocity(VECTOR);
+        Vector3f getPosition();
+        void setPosition(Vector3f);
+        Vector3f getVelocity();
+        void setVelocity(Vector3f);
         const float* getRotation();
         void setRotation(const float*);
-        VECTOR getOmega();
-        void setOmega(VECTOR);
+        Vector3f getOmega();
+        void setOmega(Vector3f);
         Geometry* getGeometry();
         void setGeometry(Geometry*);
 
@@ -31,8 +31,8 @@ class Entity
         // Stylistic Properties 
         //
 
-        VECTOR getColor();
-        void setColor(VECTOR);
+        Vector3f getColor();
+        void setColor(Vector3f);
 
         float getOpacity();
         void setOpacity(float);

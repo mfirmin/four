@@ -1,21 +1,21 @@
 #ifndef BOX_H
 #define BOX_H 
 
-#include "math/VECTOR.h"
+#include "vmath.h"
 #include "entity/Geometry.h"
 
 class Box : public Geometry
 {
     public:
 
-        Box(VECTOR sides);
+        Box(Vector3f sides);
 
         int init();
 
 
-        VECTOR getSides();
+        Vector3f getSides();
 
-        void setSides(VECTOR);
+        void setSides(Vector3f);
         void setWidth(float);
         void setHeight(float);
         void setDepth(float);
