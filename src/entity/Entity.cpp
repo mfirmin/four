@@ -5,24 +5,24 @@
 #include <vector>
 
 #include "entity/entity.h"
-#include "math/VECTOR.h"
+#include "vmath.h"
 #include "utils/utils.h"
 
 struct Entity::impl
 {
 
-    VECTOR pos;
-    VECTOR vel;
+    Vector3f pos;
+    Vector3f vel;
     float rot[9];
-    VECTOR ang_vel;
-    VECTOR color;
+    Vector3f ang_vel;
+    Vector3f color;
     float opacity;
 
     Geometry* geom;
     
 };
 
-Entity::Entity(Geometry* g, VECTOR p, VECTOR v, VECTOR r, VECTOR w) 
+Entity::Entity(Geometry* g, Vector3f p, Vector3f v, Vector3f r, Vector3f w) 
 {
     pimpl = new impl();
     pimpl->pos = p;
@@ -30,7 +30,7 @@ Entity::Entity(Geometry* g, VECTOR p, VECTOR v, VECTOR r, VECTOR w)
     utils::RFromEulerAngles(pimpl->rot, r);
     pimpl->ang_vel= w;
 
-    pimpl->color = VECTOR(.5,.5,.5);
+    pimpl->color = Vector3f(.5,.5,.5);
     pimpl->opacity = 1;
 
     pimpl->geom = g;
@@ -41,12 +41,12 @@ int Entity::init()
     return 0;
 }
 
-VECTOR Entity::getColor()
+Vector3f Entity::getColor()
 {
     return pimpl->color;
 }
 
-void Entity::setColor(VECTOR c)
+void Entity::setColor(Vector3f c)
 {
     pimpl->color = c;
 }
@@ -71,21 +71,21 @@ void Entity::setGeometry(Geometry* g)
     pimpl->geom = g;
 }
 
-VECTOR Entity::getPosition()
+Vector3f Entity::getPosition()
 {
     return pimpl->pos;
 
 }
-void Entity::setPosition(VECTOR pos)
+void Entity::setPosition(Vector3f pos)
 {
     pimpl->pos = pos;
 }
-VECTOR Entity::getVelocity()
+Vector3f Entity::getVelocity()
 {
     return pimpl->vel;
 
 }
-void Entity::setVelocity(VECTOR vel)
+void Entity::setVelocity(Vector3f vel)
 {
     pimpl->vel = vel;
 }
@@ -103,12 +103,12 @@ void Entity::setRotation(const float* rot_in)
 {
     utils::ODE_to_OGL(pimpl->rot, rot_in);
 }
-VECTOR Entity::getOmega()
+Vector3f Entity::getOmega()
 {
     return pimpl->ang_vel;
 
 }
-void Entity::setOmega(VECTOR o)
+void Entity::setOmega(Vector3f o)
 {
     pimpl->ang_vel = o;
 }

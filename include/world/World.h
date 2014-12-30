@@ -1,7 +1,7 @@
 #ifndef WORLD_H
 #define WORLD_H
 
-#include "math/VECTOR.h"
+#include "vmath.h"
 
 class Entity;
 
@@ -13,7 +13,7 @@ class World
 
         int init();
         int addEntity(Entity* e);
-        int addPointLight(VECTOR pos);
+        int addPointLight(Vector3f pos);
         void go(float stepsize);
 
     private:

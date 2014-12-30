@@ -14,7 +14,7 @@
 #include <vector>
 
 #include "renderer/Renderer.h"
-#include "math/VECTOR.h"
+#include "vmath.h"
 #include "entity/Entity.h"
 #include "entity/Box.h"
 #include "entity/Plane.h"
@@ -63,7 +63,7 @@ int Renderer::init()
 
 }
 
-int Renderer::addPointLight(VECTOR pos)
+int Renderer::addPointLight(Vector3f pos)
 {
 	GLfloat light_ambient[] = { .1, .1, .1, 1.0 };
 	GLfloat light_diffuse[] = { .7, .7, .7, 1.0 };
@@ -154,8 +154,8 @@ void Renderer::impl::renderBox(Entity* e)
 {
 
     glPushMatrix();
-    VECTOR pos = e->getPosition();
-    VECTOR color = e->getColor();
+    Vector3f pos = e->getPosition();
+    Vector3f color = e->getColor();
     const float* rot = e->getRotation();
     float opacity = e->getOpacity();
 
@@ -169,7 +169,7 @@ void Renderer::impl::renderBox(Entity* e)
     glMultMatrixf(M);
 
 
-    VECTOR sides = dynamic_cast<Box*>(e->getGeometry())->getSides();
+    Vector3f sides = dynamic_cast<Box*>(e->getGeometry())->getSides();
 
     glBegin(GL_QUADS);
 
@@ -235,15 +235,15 @@ void Renderer::impl::renderLine(Entity* e)
     
     glPushMatrix();
 
-    VECTOR pos = e->getPosition();
-    VECTOR color = e->getColor();
+    Vector3f pos = e->getPosition();
+    Vector3f color = e->getColor();
     float opacity = e->getOpacity();
 
     setMaterialProperties(color.x, color.y, color.z, opacity);
 
     glTranslatef(pos.x, pos.y, pos.z-10);
 
-    std::vector<VECTOR> line = dynamic_cast<Plane*>(e->getGeometry())->getAsLine();
+    std::vector<Vector3f> line = dynamic_cast<Plane*>(e->getGeometry())->getAsLine();
 
 
     glBegin(GL_LINE_STRIP);

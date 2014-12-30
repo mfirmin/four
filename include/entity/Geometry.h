@@ -1,7 +1,7 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
-#include "math/VECTOR.h"
+#include "vmath.h"
 
 class Geometry
 {

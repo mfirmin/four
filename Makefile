@@ -5,6 +5,7 @@ CC = g++ -std=c++0x
 BINDIR = ./bin
 BUILDDIR = ./build
 SRCDIR = ./src
+LIB = ./lib
 INC = -Iinclude
 
 TARGET=./bin/world
@@ -12,6 +13,8 @@ TARGET=./bin/world
 SRCEXT=cpp
 SOURCES= $(shell find $(SRCDIR) -type f -name *.$(SRCEXT))
 OBJECTS= $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
+
+LIBOBJS = $(shell find $(LIB) -type f -name *.o)
 
 ifeq ($(UNAME), Darwin)
 	LDFLAGS = -L/opt/X11/lib -L/usr/local/lib -lGLU -lGL -lGLC -lm -lode
@@ -32,7 +35,7 @@ clean:
 #LINK
 $(TARGET): $(OBJECTS)
 	@echo " Linking . . ."
-	@echo " $(CC) $(GLFWCFLAGS) -o $(TARGET) $^ $(GLFWLDFLAGS) $(LDFLAGS)"; $(CC) $(GLFWCFLAGS) -o $(TARGET) $^ $(GLFWLDFLAGS) $(LDFLAGS)
+	$(CC) $(GLFWCFLAGS) -o $(TARGET) $^ $(LIBOBJS) $(GLFWLDFLAGS) $(LDFLAGS)
 
 #COMPILE
 $(BUILDDIR)/%.o: $(SRCDIR)/%.$(SRCEXT)

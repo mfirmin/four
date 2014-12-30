@@ -1,7 +1,7 @@
 #ifndef RENDERER_H
 #define RENDERER_H 
 
-#include "math/VECTOR.h"
+#include "vmath.h"
 
 class Entity;
 
@@ -13,7 +13,7 @@ class Renderer
 
         int init();
 
-        int  addPointLight(VECTOR);
+        int  addPointLight(Vector3f);
         int  render(const std::vector<Entity*>&);
 
     private:

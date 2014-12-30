@@ -2,9 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-#include <vector>
-
-#include "math/VECTOR.h"
+#include "vmath.h"
 
 #include "entity/Geometry.h"
 
