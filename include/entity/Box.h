@@ -29,4 +29,4 @@ class Box : public Geometry
         static const Type _type = BOX;
 };
 
-#endif // ENTITY_H
+#endif // BOX_H
