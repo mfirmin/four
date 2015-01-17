@@ -19,6 +19,7 @@
 #include "entity/Box.h"
 #include "entity/Cylinder.h"
 #include "entity/Capsule.h"
+#include "entity/Sphere.h"
 #include "entity/Plane.h"
 #include "entity/Geometry.h"
 #include "utils/utils.h"
@@ -36,6 +37,7 @@ struct Renderer::impl
     void renderBox(Entity*);
     void renderCylinder(Entity*);
     void renderCapsule(Entity*);
+    void renderSphere(Entity*);
     void renderLine(Entity*);
 
     void setCamera();
@@ -124,6 +126,7 @@ int Renderer::impl::initGL()
 
 int Renderer::impl::initGLFW()
 {
+
 
 	if (!glfwInit())
     {
@@ -228,6 +231,32 @@ void Renderer::impl::renderCapsule(Entity* e)
     glPushMatrix();
         glTranslatef(0, 0, -h/2.);
         gluCylinder(gluNewQuadric(), r, r, h, 16, 16);
+    glPopMatrix();
+
+    glPopMatrix();
+
+}
+void Renderer::impl::renderSphere(Entity* e)
+{
+    glPushMatrix();
+    Vector3f pos = e->getPosition();
+    Vector3f color = e->getColor();
+    const float* rot = e->getRotation();
+    float opacity = e->getOpacity();
+
+    setMaterialProperties(color.x, color.y, color.z, opacity);
+
+    float M[16];
+    utils::setMFromRAndP(M, rot, pos);
+
+    
+    glTranslatef(0,0,-10);
+    glMultMatrixf(M);
+
+    float r = dynamic_cast<Sphere*>(e->getGeometry())->getRadius();
+
+    glPushMatrix();
+        gluSphere(gluNewQuadric(), r, 16, 16);
     glPopMatrix();
 
     glPopMatrix();
@@ -375,7 +404,11 @@ int Renderer::render(const std::vector<Entity*>& e)
             case Geometry::Type::PLANE:
                 pimpl->renderLine(*it);
                 break;
+            case Geometry::Type::SPHERE:
+                pimpl->renderSphere(*it);
+                break;
             default:
+                std::cerr << "Renderer.cpp: Unknown Entity TYPE: " << (*it)->getGeometry()->getType() << std::endl;
                 break;
         }
 

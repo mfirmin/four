@@ -19,6 +19,7 @@
 #include "entity/Box.h"
 #include "entity/Cylinder.h"
 #include "entity/Capsule.h"
+#include "entity/Sphere.h"
 #include "entity/Plane.h"
 
 #include "vmath.h"
@@ -97,6 +98,9 @@ int World::addEntity(Entity* e)
     {
         case Geometry::Type::BOX:
             ent = pimpl->simulator.addBox(e->getPosition(), dynamic_cast<Box*>(e->getGeometry())->getSides(), e->getVelocity(), e->getRotation(), e->getOmega(), 10);
+            break;
+        case Geometry::Type::SPHERE:
+            ent = pimpl->simulator.addSphere(e->getPosition(), dynamic_cast<Sphere*>(e->getGeometry())->getRadius(), e->getVelocity(), e->getRotation(), e->getOmega(), 10);
             break;
         case Geometry::Type::CYLINDER:
             ent = pimpl->simulator.addCylinder(e->getPosition(), dynamic_cast<Cylinder*>(e->getGeometry())->getRadius(), dynamic_cast<Cylinder*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotation(), e->getOmega(), 10);
@@ -221,6 +225,9 @@ int main(int argc, char** argv)
     
     Entity* e4 = new Entity(new Capsule(.5, 1), Vector3f(1,25,0));
     e4->setColor(Vector3f(.8,.8,.2));
+
+    Entity* e5 = new Entity(new Sphere(.5), Vector3f(1.2,18,0));
+    e5->setColor(Vector3f(.5,.5,.5));
     
     
 
@@ -228,6 +235,7 @@ int main(int argc, char** argv)
     world->addEntity(e2);
     world->addEntity(e3);
     world->addEntity(e4);
+    world->addEntity(e5);
 
     Geometry* ground = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
     Entity* groundEntity  = new Entity(ground);
