@@ -17,6 +17,9 @@
 #include "world/world.h"
 #include "entity/Geometry.h"
 #include "entity/Box.h"
+#include "entity/Cylinder.h"
+#include "entity/Capsule.h"
+#include "entity/Sphere.h"
 #include "entity/Plane.h"
 
 #include "vmath.h"
@@ -95,6 +98,15 @@ int World::addEntity(Entity* e)
     {
         case Geometry::Type::BOX:
             ent = pimpl->simulator.addBox(e->getPosition(), dynamic_cast<Box*>(e->getGeometry())->getSides(), e->getVelocity(), e->getRotation(), e->getOmega(), 10);
+            break;
+        case Geometry::Type::SPHERE:
+            ent = pimpl->simulator.addSphere(e->getPosition(), dynamic_cast<Sphere*>(e->getGeometry())->getRadius(), e->getVelocity(), e->getRotation(), e->getOmega(), 10);
+            break;
+        case Geometry::Type::CYLINDER:
+            ent = pimpl->simulator.addCylinder(e->getPosition(), dynamic_cast<Cylinder*>(e->getGeometry())->getRadius(), dynamic_cast<Cylinder*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotation(), e->getOmega(), 10);
+            break;
+        case Geometry::Type::CAPSULE:
+            ent = pimpl->simulator.addCapsule(e->getPosition(), dynamic_cast<Capsule*>(e->getGeometry())->getRadius(), dynamic_cast<Capsule*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotation(), e->getOmega(), 10);
             break;
         case Geometry::Type::PLANE:
             ent = pimpl->simulator.addPlane(dynamic_cast<Plane*>(e->getGeometry())->getA(), dynamic_cast<Plane*>(e->getGeometry())->getB());
@@ -199,14 +211,31 @@ int main(int argc, char** argv)
 
     Geometry* g = new Box(Vector3f(1,1,1));
 
-    Entity* e = new Entity(g, Vector3f(0,10,0), Vector3f(0,0,0), Vector3f(-.7, 0, 0));
+    Entity* e = new Entity(g, Vector3f(0,10,-1), Vector3f(0,0,0), Vector3f(-.7, 0, 0));
     e->setColor(Vector3f(1,.3,.3));
 
-    Entity* e2 = new Entity(new Box(Vector3f(2,1,1)), Vector3f(1,15,0));
+    
+    Entity* e3 = new Entity(new Box(Vector3f(2,1,1)), Vector3f(3,15,0));
+    e3->setColor(Vector3f(0,.8,.2));
+    
+
+    Entity* e2 = new Entity(new Cylinder(.5, 1), Vector3f(0,15,0));
     e2->setColor(Vector3f(0,.4,.7));
+
+    
+    Entity* e4 = new Entity(new Capsule(.5, 1), Vector3f(1,25,0));
+    e4->setColor(Vector3f(.8,.8,.2));
+
+    Entity* e5 = new Entity(new Sphere(.5), Vector3f(1.2,18,0));
+    e5->setColor(Vector3f(.5,.5,.5));
+    
+    
 
     world->addEntity(e);
     world->addEntity(e2);
+    world->addEntity(e3);
+    world->addEntity(e4);
+    world->addEntity(e5);
 
     Geometry* ground = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
     Entity* groundEntity  = new Entity(ground);

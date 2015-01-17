@@ -11,7 +11,7 @@ class Geometry
 
         int init();
 
-        enum Type { BOX, PLANE, N_TYPES };
+        enum Type { BOX, PLANE, CYLINDER, CAPSULE, SPHERE, N_TYPES };
 
         virtual Type getType() = 0;
 

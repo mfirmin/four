@@ -115,6 +115,41 @@ int ODEWrapper::addBox(Vector3f pos, Vector3f sides, Vector3f vel0, const float*
 
 }
 
+int ODEWrapper::addCylinder(Vector3f pos, float rad, float h, Vector3f vel0, const float* ang0, Vector3f ang_vel0, float mass)
+{
+    dMass m;
+    dMassSetCylinderTotal(&m, mass, 3, rad, h);
+    dGeomID geom = dCreateCylinder(pimpl->space, rad, h);
+    dBodyID id = pimpl->addBody(this, geom, pos, vel0, ang0, ang_vel0);
+    dBodySetMass(id, &m);
+    dGeomSetBody(geom, id);
+    pimpl->bodies.push_back(id);
+    return pimpl->bodies.size()-1;
+}
+
+int ODEWrapper::addSphere(Vector3f pos, float rad, Vector3f vel0, const float* ang0, Vector3f ang_vel0, float mass)
+{
+    dMass m;
+    dMassSetSphere(&m, mass, rad);
+    dGeomID geom = dCreateSphere(pimpl->space, rad);
+    dBodyID id = pimpl->addBody(this, geom, pos, vel0, ang0, ang_vel0);
+    dBodySetMass(id, &m);
+    dGeomSetBody(geom, id);
+    pimpl->bodies.push_back(id);
+    return pimpl->bodies.size()-1;
+}
+int ODEWrapper::addCapsule(Vector3f pos, float rad, float h, Vector3f vel0, const float* ang0, Vector3f ang_vel0, float mass)
+{
+    dMass m;
+    dMassSetCapsule(&m, mass, 3, rad, h);
+    dGeomID geom = dCreateCapsule(pimpl->space, rad, h);
+    dBodyID id = pimpl->addBody(this, geom, pos, vel0, ang0, ang_vel0);
+    dBodySetMass(id, &m);
+    dGeomSetBody(geom, id);
+    pimpl->bodies.push_back(id);
+    return pimpl->bodies.size()-1;
+}
+
 int ODEWrapper::addPlane(Vector3f a, Vector3f b)
 {
     dReal dx = b.x - a.x, dy = b.y - a.y; 

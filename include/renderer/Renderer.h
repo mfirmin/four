@@ -13,8 +13,8 @@ class Renderer
 
         int init();
 
-        int  addPointLight(Vector3f);
-        int  render(const std::vector<Entity*>&);
+        int addPointLight(Vector3f);
+        int render(const std::vector<Entity*>&);
 
     private:
 
