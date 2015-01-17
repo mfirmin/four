@@ -23,7 +23,7 @@ struct ODEWrapper::impl
     std::vector<dBodyID> bodies;
     std::vector<dJointID> joints;
 
-    dBodyID addBody(ODEWrapper*, dGeomID&, Vector3f, Vector3f, const float*, Vector3f);
+    dBodyID addBody(ODEWrapper*, dGeomID&, Vector3f, Vector3f, Quaternion<float>, Vector3f);
 
     dBodyID getBodyIDFromID(int i) { return bodies.at(i); }
 
@@ -59,7 +59,7 @@ int ODEWrapper::init()
 
 }
 
-dBodyID ODEWrapper::impl::addBody(ODEWrapper*, dGeomID&, Vector3f pos, Vector3f vel, const float* ang, Vector3f w)
+dBodyID ODEWrapper::impl::addBody(ODEWrapper*, dGeomID&, Vector3f pos, Vector3f vel, Quaternion<float> ang, Vector3f w)
 {
     dBodyID id = dBodyCreate(world);
     dBodySetPosition(id, pos.x, pos.y, pos.z);
@@ -91,14 +91,14 @@ dBodyID ODEWrapper::impl::addBody(ODEWrapper*, dGeomID&, Vector3f pos, Vector3f 
     return id;
 }
 
-int ODEWrapper::addCube(Vector3f pos, float sides, Vector3f vel0, const float* ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addCube(Vector3f pos, float sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
 {
 
     return addBox(pos, Vector3f(sides, sides, sides), vel0, ang0, ang_vel0, mass);
 
 }
 
-int ODEWrapper::addBox(Vector3f pos, Vector3f sides, Vector3f vel0, const float* ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addBox(Vector3f pos, Vector3f sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
 {
     dMass m;
 	dMassSetBoxTotal(&m, mass, sides.x, sides.y, sides.z);
@@ -115,7 +115,7 @@ int ODEWrapper::addBox(Vector3f pos, Vector3f sides, Vector3f vel0, const float*
 
 }
 
-int ODEWrapper::addCylinder(Vector3f pos, float rad, float h, Vector3f vel0, const float* ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addCylinder(Vector3f pos, float rad, float h, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
 {
     dMass m;
     dMassSetCylinderTotal(&m, mass, 3, rad, h);
@@ -127,7 +127,7 @@ int ODEWrapper::addCylinder(Vector3f pos, float rad, float h, Vector3f vel0, con
     return pimpl->bodies.size()-1;
 }
 
-int ODEWrapper::addSphere(Vector3f pos, float rad, Vector3f vel0, const float* ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addSphere(Vector3f pos, float rad, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
 {
     dMass m;
     dMassSetSphere(&m, mass, rad);
@@ -138,7 +138,7 @@ int ODEWrapper::addSphere(Vector3f pos, float rad, Vector3f vel0, const float* a
     pimpl->bodies.push_back(id);
     return pimpl->bodies.size()-1;
 }
-int ODEWrapper::addCapsule(Vector3f pos, float rad, float h, Vector3f vel0, const float* ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addCapsule(Vector3f pos, float rad, float h, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
 {
     dMass m;
     dMassSetCapsule(&m, mass, 3, rad, h);
@@ -223,11 +223,14 @@ Vector3f ODEWrapper::getBodyPositionFromID(int id)
     return Vector3f(pos[0], pos[1], pos[2]);
 }
 
-const float* ODEWrapper::getBodyRotationFromID(int id)
+// TODO: finish me!
+Quaternion<float> ODEWrapper::getBodyRotationFromID(int id)
 {
 	const dReal* R = dGeomGetRotation(dBodyGetFirstGeom(pimpl->getBodyIDFromID(id)));
 
-    return (const float*)R;
+    Quaternion<float> q = Quaternion<float>();
+
+    return Quaternion<float>().fromEulerAngles(0,0,0);;
 }
 
 void ODEWrapper::step(float timestep) 

@@ -9,7 +9,7 @@ class Entity
 {
     public:
 
-        Entity(Geometry*, Vector3f p=Vector3f(0,0,0), Vector3f v=Vector3f(0,0,0), Vector3f r=Vector3f(0,0,0), Vector3f w=Vector3f(0,0,0));
+        Entity(Geometry*, Vector3f p=Vector3f(0,0,0), Vector3f v=Vector3f(0,0,0), Quaternion<float> r=Quaternion<float>().fromEulerAngles(0,0,0), Vector3f w=Vector3f(0,0,0));
 
         int init();
 
@@ -20,8 +20,8 @@ class Entity
         void setPosition(Vector3f);
         Vector3f getVelocity();
         void setVelocity(Vector3f);
-        const float* getRotation();
-        void setRotation(const float*);
+        Quaternion<float> getRotationAsQuaternion();
+        void setRotation(Quaternion<float>);
         Vector3f getOmega();
         void setOmega(Vector3f);
         Geometry* getGeometry();

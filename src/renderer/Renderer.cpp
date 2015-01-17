@@ -162,7 +162,7 @@ void Renderer::impl::renderCylinder(Entity* e)
     glPushMatrix();
     Vector3f pos = e->getPosition();
     Vector3f color = e->getColor();
-    const float* rot = e->getRotation();
+    Quaternion<float> rot = e->getRotationAsQuaternion();
     float opacity = e->getOpacity();
 
     setMaterialProperties(color.x, color.y, color.z, opacity);
@@ -203,7 +203,7 @@ void Renderer::impl::renderCapsule(Entity* e)
     glPushMatrix();
     Vector3f pos = e->getPosition();
     Vector3f color = e->getColor();
-    const float* rot = e->getRotation();
+    Quaternion<float> rot = e->getRotationAsQuaternion();
     float opacity = e->getOpacity();
 
     setMaterialProperties(color.x, color.y, color.z, opacity);
@@ -241,7 +241,7 @@ void Renderer::impl::renderSphere(Entity* e)
     glPushMatrix();
     Vector3f pos = e->getPosition();
     Vector3f color = e->getColor();
-    const float* rot = e->getRotation();
+    Quaternion<float> rot = e->getRotationAsQuaternion();
     float opacity = e->getOpacity();
 
     setMaterialProperties(color.x, color.y, color.z, opacity);
@@ -269,7 +269,7 @@ void Renderer::impl::renderBox(Entity* e)
     glPushMatrix();
     Vector3f pos = e->getPosition();
     Vector3f color = e->getColor();
-    const float* rot = e->getRotation();
+    Quaternion<float> rot = e->getRotationAsQuaternion();
     float opacity = e->getOpacity();
 
     setMaterialProperties(color.x, color.y, color.z, opacity);

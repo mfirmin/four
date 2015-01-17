@@ -97,16 +97,16 @@ int World::addEntity(Entity* e)
     switch(e->getGeometry()->getType())
     {
         case Geometry::Type::BOX:
-            ent = pimpl->simulator.addBox(e->getPosition(), dynamic_cast<Box*>(e->getGeometry())->getSides(), e->getVelocity(), e->getRotation(), e->getOmega(), 10);
+            ent = pimpl->simulator.addBox(e->getPosition(), dynamic_cast<Box*>(e->getGeometry())->getSides(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
             break;
         case Geometry::Type::SPHERE:
-            ent = pimpl->simulator.addSphere(e->getPosition(), dynamic_cast<Sphere*>(e->getGeometry())->getRadius(), e->getVelocity(), e->getRotation(), e->getOmega(), 10);
+            ent = pimpl->simulator.addSphere(e->getPosition(), dynamic_cast<Sphere*>(e->getGeometry())->getRadius(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
             break;
         case Geometry::Type::CYLINDER:
-            ent = pimpl->simulator.addCylinder(e->getPosition(), dynamic_cast<Cylinder*>(e->getGeometry())->getRadius(), dynamic_cast<Cylinder*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotation(), e->getOmega(), 10);
+            ent = pimpl->simulator.addCylinder(e->getPosition(), dynamic_cast<Cylinder*>(e->getGeometry())->getRadius(), dynamic_cast<Cylinder*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
             break;
         case Geometry::Type::CAPSULE:
-            ent = pimpl->simulator.addCapsule(e->getPosition(), dynamic_cast<Capsule*>(e->getGeometry())->getRadius(), dynamic_cast<Capsule*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotation(), e->getOmega(), 10);
+            ent = pimpl->simulator.addCapsule(e->getPosition(), dynamic_cast<Capsule*>(e->getGeometry())->getRadius(), dynamic_cast<Capsule*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
             break;
         case Geometry::Type::PLANE:
             ent = pimpl->simulator.addPlane(dynamic_cast<Plane*>(e->getGeometry())->getA(), dynamic_cast<Plane*>(e->getGeometry())->getB());
@@ -188,12 +188,13 @@ void World::go(float stepsize)
         pimpl->updateEntities();
         pimpl->frameTime+= stepsize;
 
+//        std::cout << pimpl->entities[0]->getPosition().y << std::endl;
+
         if (pimpl->frameTime > pimpl->framerate)
         {
             pimpl->waitForRender(last);
             pimpl->renderer.render(pimpl->entities);
             pimpl->frameTime = 0;
-
         }
     }
 }
@@ -211,7 +212,7 @@ int main(int argc, char** argv)
 
     Geometry* g = new Box(Vector3f(1,1,1));
 
-    Entity* e = new Entity(g, Vector3f(0,10,-1), Vector3f(0,0,0), Vector3f(-.7, 0, 0));
+    Entity* e = new Entity(g, Vector3f(0,10,-1), Vector3f(0,0,0), Quaternion<float>().fromEulerAngles(0,0,0));
     e->setColor(Vector3f(1,.3,.3));
 
     

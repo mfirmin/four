@@ -11,7 +11,7 @@ namespace utils
 
     void RFromEulerAngles(float* R, Vector3f angles);
 
-    void setMFromRAndP(float* M, const float* R, Vector3f pos);
+    void setMFromRAndP(float* M, Quaternion<float> R, Vector3f pos);
 
 }
 

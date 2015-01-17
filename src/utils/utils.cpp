@@ -40,8 +40,17 @@ namespace utils
 
     }
 
-    void setMFromRAndP(float* M, const float* R, Vector3f pos) 
+    void setMFromRAndP(float* M, Quaternion<float> q, Vector3f pos) 
     {
+        q.normalize();
+        float R[9];
+        R[0] = 1 - 2*q.v.y*q.v.y - 2*q.v.z*q.v.z; R[3] = 2*q.v.x*q.v.y - 2*q.v.z*q.w;     R[6] = 2*q.v.x*q.v.z + 2*q.v.y*q.w;
+        R[1] = 2*q.v.x*q.v.y + 2*q.v.z*q.w;     R[4] = 1 - 2*q.v.x*q.v.x - 2*q.v.z*q.v.z; R[7] = 2*q.v.y*q.v.z - 2*q.v.x*q.w;
+        R[2] = 2*q.v.x*q.v.z - 2*q.v.y*q.w;     R[5] = 2*q.v.y*q.v.z + 2*q.v.x*q.w;     R[8] = 1 - 2*q.v.x*q.v.x - 2*q.v.y*q.v.y;
+
+
+        std::cout << "---" << std::endl;
+
         M[0] = R[0]; M[4] = R[3]; M[8] =  R[6];  M[12] = pos.x;
         M[1] = R[1]; M[5] = R[4]; M[9] =  R[7];  M[13] = pos.y;
         M[2] = R[2]; M[6] = R[5]; M[10] = R[8];  M[14] = pos.z;

@@ -13,7 +13,7 @@ struct Entity::impl
 
     Vector3f pos;
     Vector3f vel;
-    float rot[9];
+    Quaternion<float> rot;
     Vector3f ang_vel;
     Vector3f color;
     float opacity;
@@ -22,12 +22,12 @@ struct Entity::impl
     
 };
 
-Entity::Entity(Geometry* g, Vector3f p, Vector3f v, Vector3f r, Vector3f w) 
+Entity::Entity(Geometry* g, Vector3f p, Vector3f v, Quaternion<float> r, Vector3f w) 
 {
     pimpl = new impl();
     pimpl->pos = p;
     pimpl->vel = v;
-    utils::RFromEulerAngles(pimpl->rot, r);
+    pimpl->rot = r;
     pimpl->ang_vel= w;
 
     pimpl->color = Vector3f(.5,.5,.5);
@@ -89,7 +89,7 @@ void Entity::setVelocity(Vector3f vel)
 {
     pimpl->vel = vel;
 }
-const float* Entity::getRotation()
+Quaternion<float> Entity::getRotationAsQuaternion()
 {
     /*
     std::cout << pimpl->rot[0] << " " << pimpl->rot[3] << " " << pimpl->rot[6] << std::endl;
@@ -99,9 +99,9 @@ const float* Entity::getRotation()
     return pimpl->rot;
 
 }
-void Entity::setRotation(const float* rot_in)
+void Entity::setRotation(Quaternion<float> q)
 {
-    utils::ODE_to_OGL(pimpl->rot, rot_in);
+    pimpl->rot = q;
 }
 Vector3f Entity::getOmega()
 {
