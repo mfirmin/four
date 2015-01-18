@@ -43,11 +43,7 @@ struct World::impl
 
     // Entity objects.
     std::vector<Entity*> entities;
-    std::vector<Joint*> joint;
-    // references to simulation entity IDs.
-    // This is stupid!
-//    std::vector<int> simIDs;
- //   std::vector<int> jointIDs;
+    std::vector<Joint*> joints;
 
     ODEWrapper simulator;
 
@@ -139,6 +135,8 @@ Joint* World::addHingeJoint(Entity* e1, Entity* e2, Vector3f pos, Vector3f axis)
 
     HingeJoint* j = new HingeJoint(e1, e2, pos, axis);
     pimpl->simulator.addHingeJoint(e1->getID(), e2->getID(), pos, axis);
+    j->setID(pimpl->joints.size());
+    pimpl->joints.push_back(j);
     return j;
 }
 

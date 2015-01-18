@@ -24,6 +24,8 @@ struct Joint::impl
 
     Entity* parent;
     Entity* child;
+
+    int ID;
     
 };
 
@@ -39,6 +41,14 @@ Joint::Joint(Entity* e1, Entity* e2, Vector3f pos, Vector3f ang, Vector3f ang_mi
     pimpl->MAX_TORQUE = maxTorque;
     pimpl->currTorque = Vector3f(0,0,0);
 
+}
+
+void Joint::setID(int id) {
+    pimpl->ID = id;
+}
+
+int Joint::getID() {
+    return pimpl->ID;
 }
 
 Vector3f Joint::getPosition() {

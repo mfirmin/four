@@ -33,6 +33,10 @@ class Joint
         Vector3f getAngleLimitMin();
         Vector3f getAngleLimitMax();
 
+        void setID(int);
+        int getID();
+        
+
         void addTorque(Vector3f t);
 
     private:
