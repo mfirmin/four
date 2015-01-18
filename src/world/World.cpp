@@ -188,7 +188,6 @@ void World::go(float stepsize)
         pimpl->updateEntities();
         pimpl->frameTime+= stepsize;
 
-//        std::cout << pimpl->entities[0]->getPosition().y << std::endl;
 
         if (pimpl->frameTime > pimpl->framerate)
         {

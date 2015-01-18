@@ -228,9 +228,11 @@ Quaternion<float> ODEWrapper::getBodyRotationFromID(int id)
 {
 	const dReal* R = dGeomGetRotation(dBodyGetFirstGeom(pimpl->getBodyIDFromID(id)));
 
-    Quaternion<float> q = Quaternion<float>();
+    dQuaternion q_ode;
+    dGeomGetQuaternion(dBodyGetFirstGeom(pimpl->getBodyIDFromID(id)), q_ode);
+    Quaternion<float> q = Quaternion<float>(q_ode[0], q_ode[1], q_ode[2], q_ode[3]);
 
-    return Quaternion<float>().fromEulerAngles(0,0,0);;
+    return q;
 }
 
 void ODEWrapper::step(float timestep) 
