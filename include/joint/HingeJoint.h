@@ -1,23 +1,24 @@
-#ifndef JOINT_H
-#define JOINT_H
+#ifndef HINGEJOINT_H
+#define HINGEJOINT_H
 
 #include "vmath.h"
 #include "config.h"
+#include "joint/joint.h"
 
-class Geometry;
 class Entity;
 
-class Joint
+class HingeJoint : public Joint
 {
     public:
 
-        Joint(
+        HingeJoint(
                 Entity* parent, 
                 Entity* child, 
-                Vector3f angle, 
-                Vector3f ang_min=Vector3f(-180,-180,-180),
-                Vector3f ang_max = Vector3f(180,180,180),
-                Vector3f MAX_TORQUE = Vector3f(Globals::MAX_TORQUE_DEFAULT, Globals::MAX_TORQUE_DEFAULT, Globals::MAX_TORQUE_DEFAULT)
+                float angle, 
+                Vector3f axis=Vector3f(0,0,1),
+                float ang_min = -180,
+                float ang_max = 180,
+                float MAX_TORQUE = Globals::MAX_TORQUE_DEFAULT
              );
 
         int init();
@@ -25,19 +26,21 @@ class Joint
 
         // Physical Properties
 
+        /*
         Vector3f getPosition();
-        Vector3f getJointAngle();
+        Vector3f getHingeJointAngle();
         Vector3f getCurrTorque();
         Vector3f getTorqueLimit();
         Vector3f getAngleLimitMin();
         Vector3f getAngleLimitMax();
 
         void addTorque(Vector3f t);
+        */
+
 
     private:
-
         struct impl;
         impl* pimpl;
 };
 
-#endif // JOINT_H
+#endif // HINGEJOINT_H
