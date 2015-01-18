@@ -128,6 +128,15 @@ int World::addEntity(Entity* e)
     return 0;
 }
 
+int World::addHingeJoint(Entity* e1, Entity* e2, Vector3f axis)
+{
+
+
+
+    return 0;
+
+}
+
 void World::impl::updateEntities()
 {
 
