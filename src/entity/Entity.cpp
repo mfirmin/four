@@ -28,6 +28,7 @@ Entity::Entity(Geometry* g, Vector3f p, Vector3f v, Quaternion<float> r, Vector3
     pimpl->pos = p;
     pimpl->vel = v;
     pimpl->rot = r;
+    std::cout << r.v.x << ", " << r.v.y << ", " << r.v.z << ", " << r.w << std::endl;
     pimpl->ang_vel= w;
 
     pimpl->color = Vector3f(.5,.5,.5);
@@ -91,11 +92,6 @@ void Entity::setVelocity(Vector3f vel)
 }
 Quaternion<float> Entity::getRotationAsQuaternion()
 {
-    /*
-    std::cout << pimpl->rot[0] << " " << pimpl->rot[3] << " " << pimpl->rot[6] << std::endl;
-    std::cout << pimpl->rot[1] << " " << pimpl->rot[4] << " " << pimpl->rot[7] << std::endl;
-    std::cout << pimpl->rot[2] << " " << pimpl->rot[5] << " " << pimpl->rot[8] << std::endl;
-    */
     return pimpl->rot;
 
 }

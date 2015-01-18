@@ -64,8 +64,6 @@ dBodyID ODEWrapper::impl::addBody(ODEWrapper*, dGeomID&, Vector3f pos, Vector3f 
     dBodyID id = dBodyCreate(world);
     dBodySetPosition(id, pos.x, pos.y, pos.z);
 
-	dMatrix3 R;
-	dRFromEulerAngles(R, 0, 0, 0);
 
 
     /*
@@ -81,7 +79,12 @@ dBodyID ODEWrapper::impl::addBody(ODEWrapper*, dGeomID&, Vector3f pos, Vector3f 
     */
 
     
-	dBodySetRotation(id, R);
+    dQuaternion q; 
+    q[0] = ang.v.x;
+    q[1] = ang.v.y;
+    q[2] = ang.v.z;
+    q[3] = ang.w;
+    dBodySetQuaternion(id, q);
     //std::cout << R << std::endl;
     //std::cout << ang.x << " " << ang.y << " " << ang.z << std::endl;
 
@@ -231,6 +234,7 @@ Quaternion<float> ODEWrapper::getBodyRotationFromID(int id)
     dQuaternion q_ode;
     dGeomGetQuaternion(dBodyGetFirstGeom(pimpl->getBodyIDFromID(id)), q_ode);
     Quaternion<float> q = Quaternion<float>(q_ode[0], q_ode[1], q_ode[2], q_ode[3]);
+
 
     return q;
 }

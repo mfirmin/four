@@ -211,9 +211,8 @@ int main(int argc, char** argv)
 
     Geometry* g = new Box(Vector3f(1,1,1));
 
-    Entity* e = new Entity(g, Vector3f(0,10,-1), Vector3f(0,0,0), Quaternion<float>().fromEulerAngles(0,0,0));
+    Entity* e = new Entity(g, Vector3f(0,10,-1), Vector3f(0,0,0), Quaternion<float>().fromEulerAngles(44,0,0));
     e->setColor(Vector3f(1,.3,.3));
-
     
     Entity* e3 = new Entity(new Box(Vector3f(2,1,1)), Vector3f(3,15,0));
     e3->setColor(Vector3f(0,.8,.2));
@@ -230,12 +229,13 @@ int main(int argc, char** argv)
     e5->setColor(Vector3f(.5,.5,.5));
     
     
-
     world->addEntity(e);
+    /*
     world->addEntity(e2);
     world->addEntity(e3);
     world->addEntity(e4);
     world->addEntity(e5);
+    */
 
     Geometry* ground = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
     Entity* groundEntity  = new Entity(ground);
