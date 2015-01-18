@@ -17,7 +17,7 @@ class ODEWrapper
         int addCapsule(Vector3f pos, float rad, float h, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass);
         int addSphere(Vector3f pos, float rad, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass);
         int addPlane(Vector3f A, Vector3f B);
-        int addJoint(Vector3f pos, float theta=0, float dTheta=0);
+        int addHingeJoint(int parent, int child, Vector3f pos, Vector3f axis, float ang_min=-180, float ang_max=180);
         Vector3f getBodyPositionFromID(int id);
         Quaternion<float> getBodyRotationFromID(int id);
 

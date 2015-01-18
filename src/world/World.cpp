@@ -22,6 +22,9 @@
 #include "entity/Sphere.h"
 #include "entity/Plane.h"
 
+#include "joint/Joint.h"
+#include "joint/HingeJoint.h"
+
 #include "vmath.h"
 #include "physics/ODEWrapper.h"
 #include "entity/Entity.h"
@@ -40,8 +43,11 @@ struct World::impl
 
     // Entity objects.
     std::vector<Entity*> entities;
-    // references to simulation IDs.
-    std::vector<int> simIDs;
+    std::vector<Joint*> joint;
+    // references to simulation entity IDs.
+    // This is stupid!
+//    std::vector<int> simIDs;
+ //   std::vector<int> jointIDs;
 
     ODEWrapper simulator;
 
@@ -122,31 +128,28 @@ int World::addEntity(Entity* e)
         return -1;
     }
 
+    e->setID(pimpl->entities.size());
     pimpl->entities.push_back(e);
-    pimpl->simIDs.push_back(ent);;
 
     return 0;
 }
 
-int World::addHingeJoint(Entity* e1, Entity* e2, Vector3f axis)
+Joint* World::addHingeJoint(Entity* e1, Entity* e2, Vector3f pos, Vector3f axis)
 {
 
-
-
-    return 0;
-
+    HingeJoint* j = new HingeJoint(e1, e2, pos, axis);
+    pimpl->simulator.addHingeJoint(e1->getID(), e2->getID(), pos, axis);
+    return j;
 }
 
 void World::impl::updateEntities()
 {
 
-    auto IDit = simIDs.begin();
     for (auto it = entities.begin(); it != entities.end(); it++)
     {
         if ((*it)->getGeometry()->getType() == Geometry::Type::PLANE) { continue; }
-        (*it)->setPosition(simulator.getBodyPositionFromID(*IDit));
-        (*it)->setRotation(simulator.getBodyRotationFromID(*IDit));
-        IDit++;
+        (*it)->setPosition(simulator.getBodyPositionFromID((*it)->getID()));
+        (*it)->setRotation(simulator.getBodyRotationFromID((*it)->getID()));
     }
 
 }
@@ -220,15 +223,19 @@ int main(int argc, char** argv)
 
     Geometry* g = new Box(Vector3f(1,1,1));
 
-    Entity* e = new Entity(g, Vector3f(0,10,-1), Vector3f(0,0,0), Quaternion<float>().fromEulerAngles(44,0,0));
+    Entity* e = new Entity(g, Vector3f(0,10,0), Vector3f(0,0,0), Quaternion<float>().fromEulerAngles(0,0,0));
     e->setColor(Vector3f(1,.3,.3));
     
-    Entity* e3 = new Entity(new Box(Vector3f(2,1,1)), Vector3f(3,15,0));
-    e3->setColor(Vector3f(0,.8,.2));
+    Entity* e2 = new Entity(new Box(Vector3f(1,1,1)), Vector3f(1,11,0));
+    e2->setColor(Vector3f(0,.8,.2));
     
+    Entity* e3 = new Entity(new Box(Vector3f(1,1,1)), Vector3f(-1,10,0));
+    e3->setColor(Vector3f(0,.4,.6));
 
-    Entity* e2 = new Entity(new Cylinder(.5, 1), Vector3f(0,15,0));
-    e2->setColor(Vector3f(0,.4,.7));
+
+    /*
+    Entity* e3 = new Entity(new Cylinder(.5, 1), Vector3f(0,15,0));
+    e3->setColor(Vector3f(0,.4,.7));
 
     
     Entity* e4 = new Entity(new Capsule(.5, 1), Vector3f(1,25,0));
@@ -237,10 +244,15 @@ int main(int argc, char** argv)
     Entity* e5 = new Entity(new Sphere(.5), Vector3f(1.2,18,0));
     e5->setColor(Vector3f(.5,.5,.5));
     
-    
+    */
     world->addEntity(e);
-    /*
     world->addEntity(e2);
+    world->addEntity(e3);
+
+
+    Joint* j = world->addHingeJoint(e, e2, Vector3f(.5, 10.5, 0));
+    Joint* j2 = world->addHingeJoint(e, e3, Vector3f(-.5, 9.5, 0));
+    /*
     world->addEntity(e3);
     world->addEntity(e4);
     world->addEntity(e5);

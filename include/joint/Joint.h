@@ -14,7 +14,8 @@ class Joint
         Joint(
                 Entity* parent, 
                 Entity* child, 
-                Vector3f angle, 
+                Vector3f pos,
+                Vector3f angle=Vector3f(0,0,0), 
                 Vector3f ang_min=Vector3f(-180,-180,-180),
                 Vector3f ang_max = Vector3f(180,180,180),
                 Vector3f MAX_TORQUE = Vector3f(Globals::MAX_TORQUE_DEFAULT, Globals::MAX_TORQUE_DEFAULT, Globals::MAX_TORQUE_DEFAULT)

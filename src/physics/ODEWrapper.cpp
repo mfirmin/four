@@ -164,11 +164,21 @@ int ODEWrapper::addPlane(Vector3f a, Vector3f b)
     return 0;          
 }
 
-int addJoint(Vector3f pos, float theta=0, float dTheta=0)
+int ODEWrapper::addHingeJoint(int parent, int child, Vector3f pos, Vector3f axis, float ang_min, float ang_max)
 {
-    std::cout << "not yet implemented" << std::endl;
-    return -1;
+    dBodyID pBID = pimpl->getBodyIDFromID(parent);
+    dBodyID cBID = pimpl->getBodyIDFromID(child);
 
+    dJointID jID = dJointCreateHinge(pimpl->world, pimpl->jointgroup);
+    dJointAttach(jID, pBID, cBID);
+    dJointSetHingeAnchor(jID, pos.x, pos.y, pos.z);
+
+    dJointSetHingeAxis(jID, axis.x, axis.y, axis.z);
+    dJointSetHingeParam(jID, dParamLoStop, ang_min);
+    dJointSetHingeParam(jID, dParamHiStop, ang_max);
+
+    pimpl->joints.push_back(jID);
+    return pimpl->joints.size()-1;;
 }
 
 struct nearCallback_data 

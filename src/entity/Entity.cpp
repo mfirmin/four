@@ -19,6 +19,8 @@ struct Entity::impl
     float opacity;
 
     Geometry* geom;
+
+    int ID;
     
 };
 
@@ -28,7 +30,6 @@ Entity::Entity(Geometry* g, Vector3f p, Vector3f v, Quaternion<float> r, Vector3
     pimpl->pos = p;
     pimpl->vel = v;
     pimpl->rot = r;
-    std::cout << r.v.x << ", " << r.v.y << ", " << r.v.z << ", " << r.w << std::endl;
     pimpl->ang_vel= w;
 
     pimpl->color = Vector3f(.5,.5,.5);
@@ -40,6 +41,15 @@ Entity::Entity(Geometry* g, Vector3f p, Vector3f v, Quaternion<float> r, Vector3
 int Entity::init()
 {
     return 0;
+}
+
+int Entity::getID()
+{
+    return pimpl->ID;
+}
+void Entity::setID(int id)
+{
+    pimpl->ID = id;
 }
 
 Vector3f Entity::getColor()

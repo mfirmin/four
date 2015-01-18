@@ -14,8 +14,9 @@ class HingeJoint : public Joint
         HingeJoint(
                 Entity* parent, 
                 Entity* child, 
-                float angle, 
+                Vector3f pos,
                 Vector3f axis=Vector3f(0,0,1),
+                float angle = 0, 
                 float ang_min = -180,
                 float ang_max = 180,
                 float MAX_TORQUE = Globals::MAX_TORQUE_DEFAULT
@@ -23,20 +24,10 @@ class HingeJoint : public Joint
 
         int init();
 
+        Vector3f getAxis();
+
 
         // Physical Properties
-
-        /*
-        Vector3f getPosition();
-        Vector3f getHingeJointAngle();
-        Vector3f getCurrTorque();
-        Vector3f getTorqueLimit();
-        Vector3f getAngleLimitMin();
-        Vector3f getAngleLimitMax();
-
-        void addTorque(Vector3f t);
-        */
-
 
     private:
         struct impl;

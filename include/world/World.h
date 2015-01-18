@@ -4,6 +4,7 @@
 #include "vmath.h"
 
 class Entity;
+class Joint;
 
 class World
 {
@@ -13,7 +14,7 @@ class World
 
         int init();
         int addEntity(Entity* e);
-        int addHingeJoint(Entity* e1, Entity* e2, Vector3f axis);
+        Joint* addHingeJoint(Entity* e1, Entity* e2, Vector3f pos, Vector3f axis=Vector3f(0,0,1));
         int addPointLight(Vector3f pos);
         void go(float stepsize);
 

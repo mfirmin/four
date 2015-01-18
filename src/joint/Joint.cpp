@@ -27,11 +27,12 @@ struct Joint::impl
     
 };
 
-Joint::Joint(Entity* e1, Entity* e2, Vector3f ang, Vector3f ang_min, Vector3f ang_max, Vector3f maxTorque) 
+Joint::Joint(Entity* e1, Entity* e2, Vector3f pos, Vector3f ang, Vector3f ang_min, Vector3f ang_max, Vector3f maxTorque) 
 {
     pimpl = new impl();
     pimpl->parent = e1;
     pimpl->child = e2;
+    pimpl->pos = pos;
     pimpl->ang = ang;
     pimpl->ANGLE_LIMIT_MIN= ang_min;
     pimpl->ANGLE_LIMIT_MAX= ang_max;

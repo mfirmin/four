@@ -27,6 +27,9 @@ class Entity
         Geometry* getGeometry();
         void setGeometry(Geometry*);
 
+        void setID(int);
+        int getID();
+
 
         // Stylistic Properties 
         //
