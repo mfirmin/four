@@ -26,12 +26,14 @@ class HingeJoint : public Joint
 
         Vector3f getAxis();
 
+        Type getType() { return _type; }
 
         // Physical Properties
 
     private:
         struct impl;
         impl* pimpl;
+        static const Type _type = HINGE;
 };
 
 #endif // HINGEJOINT_H

@@ -14,7 +14,7 @@ class World
 
         int init();
         int addEntity(Entity* e);
-        Joint* addHingeJoint(Entity* e1, Entity* e2, Vector3f pos, Vector3f axis=Vector3f(0,0,1));
+        int addJoint(Joint* j);
         int addPointLight(Vector3f pos);
         void go(float stepsize);
 

@@ -130,14 +130,20 @@ int World::addEntity(Entity* e)
     return 0;
 }
 
-Joint* World::addHingeJoint(Entity* e1, Entity* e2, Vector3f pos, Vector3f axis)
+int World::addJoint(Joint* j)
 {
 
-    HingeJoint* j = new HingeJoint(e1, e2, pos, axis);
-    pimpl->simulator.addHingeJoint(e1->getID(), e2->getID(), pos, axis);
-    j->setID(pimpl->joints.size());
-    pimpl->joints.push_back(j);
-    return j;
+    switch(j->getType()) {
+        case Joint::Type::HINGE:
+            pimpl->simulator.addHingeJoint(j->getParent()->getID(), j->getChild()->getID(), j->getPosition(), dynamic_cast<HingeJoint*>(j)->getAxis());
+            j->setID(pimpl->joints.size());
+            pimpl->joints.push_back(j);
+            break;
+        case Joint::Type::BALL:
+            std::cerr << "Ball Joints not yet implemented" << std::endl;
+            break;
+    }
+    return 0;
 }
 
 void World::impl::updateEntities()
@@ -247,9 +253,11 @@ int main(int argc, char** argv)
     world->addEntity(e2);
     world->addEntity(e3);
 
+    Joint* j = new HingeJoint(e, e2, Vector3f(.5, 10.5, 0));
+    Joint* j2 = new HingeJoint(e, e3, Vector3f(-.5, 9.5, 0));
 
-    Joint* j = world->addHingeJoint(e, e2, Vector3f(.5, 10.5, 0));
-    Joint* j2 = world->addHingeJoint(e, e3, Vector3f(-.5, 9.5, 0));
+    world->addJoint(j);
+    world->addJoint(j2);
     /*
     world->addEntity(e3);
     world->addEntity(e4);

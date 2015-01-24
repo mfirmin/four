@@ -51,6 +51,12 @@ int Joint::getID() {
     return pimpl->ID;
 }
 
+Entity* Joint::getChild() {
+    return pimpl->child;
+}
+Entity* Joint::getParent() {
+    return pimpl->parent;
+}
 Vector3f Joint::getPosition() {
     return pimpl->pos;
 }

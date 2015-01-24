@@ -23,6 +23,8 @@ class Joint
 
         int init();
 
+        Entity* getParent();
+        Entity* getChild();
 
         // Physical Properties
 
@@ -35,9 +37,12 @@ class Joint
 
         void setID(int);
         int getID();
-        
+
+        enum Type { HINGE, BALL };
 
         void addTorque(Vector3f t);
+
+        virtual Type getType() = 0;
 
     private:
 
