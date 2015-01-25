@@ -12,6 +12,8 @@
 struct Joint::impl
 {
 
+    std::string name;
+
     Vector3f pos;
     // Specified in Euler axis angles (degrees).
     Vector3f ang;
@@ -29,9 +31,10 @@ struct Joint::impl
     
 };
 
-Joint::Joint(Entity* e1, Entity* e2, Vector3f pos, Vector3f ang, Vector3f ang_min, Vector3f ang_max, Vector3f maxTorque) 
+Joint::Joint(std::string n, Entity* e1, Entity* e2, Vector3f pos, Vector3f ang, Vector3f ang_min, Vector3f ang_max, Vector3f maxTorque) 
 {
     pimpl = new impl();
+    pimpl->name = n;
     pimpl->parent = e1;
     pimpl->child = e2;
     pimpl->pos = pos;
@@ -49,6 +52,13 @@ void Joint::setID(int id) {
 
 int Joint::getID() {
     return pimpl->ID;
+}
+
+std::string Joint::getName() {
+    return pimpl->name;
+}
+void Joint::setName(std::string n) {
+    pimpl->name = n;
 }
 
 Entity* Joint::getChild() {

@@ -58,8 +58,8 @@ int main(int argc, char** argv)
     world->addEntity(e2);
     world->addEntity(e3);
 
-    Joint* j = new HingeJoint(e, e2, Vector3f(.5, 10.5, 0));
-    Joint* j2 = new HingeJoint(e, e3, Vector3f(-.5, 9.5, 0));
+    Joint* j = new HingeJoint(std::string("j1"), e, e2, Vector3f(.5, 10.5, 0));
+    Joint* j2 = new HingeJoint(std::string("j2"),e, e3, Vector3f(-.5, 9.5, 0));
 
     world->addJoint(j);
     world->addJoint(j2);

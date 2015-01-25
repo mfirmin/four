@@ -43,9 +43,10 @@ struct World::impl
 
     // Entity objects.
  //   std::vector<Entity*> entities;
-    std::vector<Joint*> joints;
+//    std::vector<Joint*> joints;
 
     std::map<std::string, Entity*> entities;
+    std::map<std::string, Joint*> joints;
 
     ODEWrapper simulator;
 
@@ -113,9 +114,8 @@ int World::addJoint(Joint* j)
 
     switch(j->getType()) {
         case Joint::Type::HINGE:
-            pimpl->simulator.addHingeJoint(j->getParent()->getName(), j->getChild()->getName(), j->getPosition(), dynamic_cast<HingeJoint*>(j)->getAxis());
-            j->setID(pimpl->joints.size());
-            pimpl->joints.push_back(j);
+            pimpl->simulator.addHingeJoint(j->getName(), j->getParent()->getName(), j->getChild()->getName(), j->getPosition(), dynamic_cast<HingeJoint*>(j)->getAxis());
+            pimpl->joints.insert(std::pair<std::string, Joint*>(j->getName(), j));
             break;
         case Joint::Type::BALL:
             std::cerr << "Ball Joints not yet implemented" << std::endl;

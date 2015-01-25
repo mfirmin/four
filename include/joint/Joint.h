@@ -2,6 +2,7 @@
 #define JOINT_H
 
 #include "vmath.h"
+#include <string>
 #include "config.h"
 
 class Geometry;
@@ -12,6 +13,7 @@ class Joint
     public:
 
         Joint(
+                std::string name,
                 Entity* parent, 
                 Entity* child, 
                 Vector3f pos,
@@ -28,6 +30,8 @@ class Joint
 
         // Physical Properties
 
+        std::string getName();
+        void setName(std::string);
         Vector3f getPosition();
         Vector3f getJointAngle();
         Vector3f getCurrTorque();

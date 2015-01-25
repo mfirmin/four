@@ -24,7 +24,8 @@ struct ODEWrapper::impl
 
     std::map<std::string, dBodyID> bodies;
 //    std::vector<dBodyID> bodies;
-    std::vector<dJointID> joints;
+//    std::vector<dJointID> joints;
+    std::map<std::string, dJointID> joints;
 
     dBodyID addBody(ODEWrapper*, dGeomID&, Vector3f, Vector3f, Quaternion<float>, Vector3f);
 
@@ -173,7 +174,7 @@ int ODEWrapper::addPlane(Vector3f a, Vector3f b)
     return 0;          
 }
 
-int ODEWrapper::addHingeJoint(std::string parent, std::string child, Vector3f pos, Vector3f axis, float ang_min, float ang_max)
+int ODEWrapper::addHingeJoint(std::string name, std::string parent, std::string child, Vector3f pos, Vector3f axis, float ang_min, float ang_max)
 {
     dBodyID pBID = pimpl->getBodyIDFromName(parent);
     dBodyID cBID = pimpl->getBodyIDFromName(child);
@@ -186,7 +187,7 @@ int ODEWrapper::addHingeJoint(std::string parent, std::string child, Vector3f po
     dJointSetHingeParam(jID, dParamLoStop, ang_min);
     dJointSetHingeParam(jID, dParamHiStop, ang_max);
 
-    pimpl->joints.push_back(jID);
+    pimpl->joints.insert(std::pair<std::string, dJointID>(name, jID));
     return pimpl->joints.size()-1;;
 }
 

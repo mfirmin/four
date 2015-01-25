@@ -12,6 +12,7 @@ class HingeJoint : public Joint
     public:
 
         HingeJoint(
+                std::string name,
                 Entity* parent, 
                 Entity* child, 
                 Vector3f pos,

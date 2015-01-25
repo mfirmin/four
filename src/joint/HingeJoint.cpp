@@ -15,7 +15,7 @@ struct HingeJoint::impl
     Vector3f axis;
 };
 
-HingeJoint::HingeJoint(Entity* e1, Entity* e2, Vector3f pos, Vector3f axis, float ang, float ang_min, float ang_max, float maxTorque) : Joint( e1, e2, pos, Vector3f(0,0,ang), Vector3f(0,0,ang_min), Vector3f(0,0,ang_max), Vector3f(0,0,maxTorque))
+HingeJoint::HingeJoint(std::string n, Entity* e1, Entity* e2, Vector3f pos, Vector3f axis, float ang, float ang_min, float ang_max, float maxTorque) : Joint( n, e1, e2, pos, Vector3f(0,0,ang), Vector3f(0,0,ang_min), Vector3f(0,0,ang_max), Vector3f(0,0,maxTorque))
 {
 
     pimpl = new impl();
