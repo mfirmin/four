@@ -11,6 +11,7 @@
 struct Entity::impl
 {
 
+    std::string name;
     Vector3f pos;
     Vector3f vel;
     Quaternion<float> rot;
@@ -24,9 +25,10 @@ struct Entity::impl
     
 };
 
-Entity::Entity(Geometry* g, Vector3f p, Vector3f v, Quaternion<float> r, Vector3f w) 
+Entity::Entity(std::string n, Geometry* g, Vector3f p, Vector3f v, Quaternion<float> r, Vector3f w) 
 {
     pimpl = new impl();
+    pimpl->name = n;
     pimpl->pos = p;
     pimpl->vel = v;
     pimpl->rot = r;
@@ -43,6 +45,14 @@ int Entity::init()
     return 0;
 }
 
+std::string Entity::getName()
+{
+    return pimpl->name;
+}
+void Entity::setName(std::string n)
+{
+    pimpl->name = n;
+}
 int Entity::getID()
 {
     return pimpl->ID;

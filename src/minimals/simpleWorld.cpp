@@ -44,13 +44,13 @@ int main(int argc, char** argv)
 
     Geometry* g = new Box(Vector3f(1,1,1));
 
-    Entity* e = new Entity(g, Vector3f(0,10,0), Vector3f(0,0,0), Quaternion<float>().fromEulerAngles(0,0,0));
+    Entity* e = new Entity(std::string("box1"), g, Vector3f(0,10,0), Vector3f(0,0,0), Quaternion<float>().fromEulerAngles(0,0,0));
     e->setColor(Vector3f(1,.3,.3));
     
-    Entity* e2 = new Entity(new Box(Vector3f(1,1,1)), Vector3f(1,11,0));
+    Entity* e2 = new Entity(std::string("box2"), new Box(Vector3f(1,1,1)), Vector3f(1,11,0));
     e2->setColor(Vector3f(0,.8,.2));
     
-    Entity* e3 = new Entity(new Box(Vector3f(1,1,1)), Vector3f(-1,10,0));
+    Entity* e3 = new Entity(std::string("box3"), new Box(Vector3f(1,1,1)), Vector3f(-1,10,0));
     e3->setColor(Vector3f(0,.4,.6));
     
 
@@ -65,7 +65,7 @@ int main(int argc, char** argv)
     world->addJoint(j2);
 
     Geometry* ground = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
-    Entity* groundEntity  = new Entity(ground);
+    Entity* groundEntity  = new Entity(std::string("ground"), ground);
     world->addEntity(groundEntity);
 
     // -- Set up world 2 -- //
@@ -73,13 +73,13 @@ int main(int argc, char** argv)
     World* w2 = new World();
     w2->init();
 
-    Entity* e4 = new Entity(new Capsule(.5, 1), Vector3f(1,25,0));
+    Entity* e4 = new Entity(std::string("cap1"), new Capsule(.5, 1), Vector3f(1,25,0));
     e4->setColor(Vector3f(.8,.8,.2));
     
     w2->addEntity(e4);
     
     Geometry* g2 = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
-    Entity* g2e = new Entity(ground);
+    Entity* g2e = new Entity(std::string("cap2"), ground);
     
     w2->addEntity(groundEntity);
 

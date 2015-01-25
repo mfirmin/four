@@ -464,25 +464,25 @@ int Renderer::render()
         for (auto it=(*wIter)->getEntities().begin(); it != (*wIter)->getEntities().end(); it++)
         {
 
-            switch ((*it)->getGeometry()->getType())
+            switch ((*it).second->getGeometry()->getType())
             {
                 case Geometry::Type::BOX:
-                    pimpl->renderBox(*it);
+                    pimpl->renderBox(it->second);
                     break;
                 case Geometry::Type::CYLINDER:
-                    pimpl->renderCylinder(*it);
+                    pimpl->renderCylinder(it->second);
                     break;
                 case Geometry::Type::CAPSULE:
-                    pimpl->renderCapsule(*it);
+                    pimpl->renderCapsule(it->second);
                     break;
                 case Geometry::Type::PLANE:
-                    pimpl->renderLine(*it);
+                    pimpl->renderLine(it->second);
                     break;
                 case Geometry::Type::SPHERE:
-                    pimpl->renderSphere(*it);
+                    pimpl->renderSphere(it->second);
                     break;
                 default:
-                    std::cerr << "Renderer.cpp: Unknown Entity TYPE: " << (*it)->getGeometry()->getType() << std::endl;
+                    std::cerr << "Renderer.cpp: Unknown Entity TYPE: " << it->second->getGeometry()->getType() << std::endl;
                     break;
             }
         }

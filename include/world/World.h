@@ -2,6 +2,7 @@
 #define WORLD_H
 
 #include "vmath.h"
+#include <map>
 
 class Entity;
 class Joint;
@@ -16,7 +17,7 @@ class World
         int addEntity(Entity* e);
         int addJoint(Joint* j);
         int addPointLight(Vector3f pos);
-        const std::vector<Entity*>& getEntities();
+        const std::map<std::string, Entity*>& getEntities();
         void go(float stepsize);
         void step(float stepsize);
 

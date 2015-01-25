@@ -9,6 +9,8 @@
 #include <cmath>
 
 #include <vector>
+#include <string>
+#include <map>
 
 #include "physics/ODEWrapper.h"
 #include "vmath.h"
@@ -20,12 +22,13 @@ struct ODEWrapper::impl
     dJointGroupID contactgroup;
     dJointGroupID jointgroup;
 
-    std::vector<dBodyID> bodies;
+    std::map<std::string, dBodyID> bodies;
+//    std::vector<dBodyID> bodies;
     std::vector<dJointID> joints;
 
     dBodyID addBody(ODEWrapper*, dGeomID&, Vector3f, Vector3f, Quaternion<float>, Vector3f);
 
-    dBodyID getBodyIDFromID(int i) { return bodies.at(i); }
+    dBodyID getBodyIDFromName(std::string name) { return bodies.find(name)->second; }
 
     static void nearCallback(void*, dGeomID, dGeomID);
 };
@@ -100,14 +103,14 @@ dBodyID ODEWrapper::impl::addBody(ODEWrapper*, dGeomID&, Vector3f pos, Vector3f 
     return id;
 }
 
-int ODEWrapper::addCube(Vector3f pos, float sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addCube(std::string name, Vector3f pos, float sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
 {
 
-    return addBox(pos, Vector3f(sides, sides, sides), vel0, ang0, ang_vel0, mass);
+    return addBox(name, pos, Vector3f(sides, sides, sides), vel0, ang0, ang_vel0, mass);
 
 }
 
-int ODEWrapper::addBox(Vector3f pos, Vector3f sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addBox(std::string name, Vector3f pos, Vector3f sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
 {
     dMass m;
 	dMassSetBoxTotal(&m, mass, sides.x, sides.y, sides.z);
@@ -119,12 +122,12 @@ int ODEWrapper::addBox(Vector3f pos, Vector3f sides, Vector3f vel0, Quaternion<f
 
     dGeomSetBody(geom, id);
 
-    pimpl->bodies.push_back(id);
+    pimpl->bodies.insert(std::pair<std::string, dBodyID>(name, id));
     return pimpl->bodies.size()-1;
 
 }
 
-int ODEWrapper::addCylinder(Vector3f pos, float rad, float h, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addCylinder(std::string name, Vector3f pos, float rad, float h, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
 {
     dMass m;
     dMassSetCylinderTotal(&m, mass, 3, rad, h);
@@ -132,11 +135,11 @@ int ODEWrapper::addCylinder(Vector3f pos, float rad, float h, Vector3f vel0, Qua
     dBodyID id = pimpl->addBody(this, geom, pos, vel0, ang0, ang_vel0);
     dBodySetMass(id, &m);
     dGeomSetBody(geom, id);
-    pimpl->bodies.push_back(id);
+    pimpl->bodies.insert(std::pair<std::string, dBodyID>(name, id));
     return pimpl->bodies.size()-1;
 }
 
-int ODEWrapper::addSphere(Vector3f pos, float rad, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addSphere(std::string name, Vector3f pos, float rad, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
 {
     dMass m;
     dMassSetSphere(&m, mass, rad);
@@ -144,10 +147,10 @@ int ODEWrapper::addSphere(Vector3f pos, float rad, Vector3f vel0, Quaternion<flo
     dBodyID id = pimpl->addBody(this, geom, pos, vel0, ang0, ang_vel0);
     dBodySetMass(id, &m);
     dGeomSetBody(geom, id);
-    pimpl->bodies.push_back(id);
+    pimpl->bodies.insert(std::pair<std::string, dBodyID>(name, id));
     return pimpl->bodies.size()-1;
 }
-int ODEWrapper::addCapsule(Vector3f pos, float rad, float h, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addCapsule(std::string name, Vector3f pos, float rad, float h, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
 {
     dMass m;
     dMassSetCapsule(&m, mass, 3, rad, h);
@@ -155,7 +158,7 @@ int ODEWrapper::addCapsule(Vector3f pos, float rad, float h, Vector3f vel0, Quat
     dBodyID id = pimpl->addBody(this, geom, pos, vel0, ang0, ang_vel0);
     dBodySetMass(id, &m);
     dGeomSetBody(geom, id);
-    pimpl->bodies.push_back(id);
+    pimpl->bodies.insert(std::pair<std::string, dBodyID>(name, id));
     return pimpl->bodies.size()-1;
 }
 
@@ -170,10 +173,10 @@ int ODEWrapper::addPlane(Vector3f a, Vector3f b)
     return 0;          
 }
 
-int ODEWrapper::addHingeJoint(int parent, int child, Vector3f pos, Vector3f axis, float ang_min, float ang_max)
+int ODEWrapper::addHingeJoint(std::string parent, std::string child, Vector3f pos, Vector3f axis, float ang_min, float ang_max)
 {
-    dBodyID pBID = pimpl->getBodyIDFromID(parent);
-    dBodyID cBID = pimpl->getBodyIDFromID(child);
+    dBodyID pBID = pimpl->getBodyIDFromName(parent);
+    dBodyID cBID = pimpl->getBodyIDFromName(child);
 
     dJointID jID = dJointCreateHinge(pimpl->world, pimpl->jointgroup);
     dJointAttach(jID, pBID, cBID);
@@ -236,19 +239,18 @@ void nearCallback(void *data, dGeomID o1, dGeomID o2)
 	}
 }
 
-Vector3f ODEWrapper::getBodyPositionFromID(int id)
+Vector3f ODEWrapper::getBodyPositionFromName(std::string name)
 {
-    const dReal* pos = dBodyGetPosition(pimpl->getBodyIDFromID(id));
+    const dReal* pos = dBodyGetPosition(pimpl->getBodyIDFromName(name));
     return Vector3f(pos[0], pos[1], pos[2]);
 }
 
-// TODO: finish me!
-Quaternion<float> ODEWrapper::getBodyRotationFromID(int id)
+Quaternion<float> ODEWrapper::getBodyRotationFromName(std::string name)
 {
-	const dReal* R = dGeomGetRotation(dBodyGetFirstGeom(pimpl->getBodyIDFromID(id)));
+	const dReal* R = dGeomGetRotation(dBodyGetFirstGeom(pimpl->getBodyIDFromName(name)));
 
     dQuaternion q_ode;
-    dGeomGetQuaternion(dBodyGetFirstGeom(pimpl->getBodyIDFromID(id)), q_ode);
+    dGeomGetQuaternion(dBodyGetFirstGeom(pimpl->getBodyIDFromName(name)), q_ode);
     Quaternion<float> q = Quaternion<float>(q_ode[0], q_ode[1], q_ode[2], q_ode[3]);
 
 

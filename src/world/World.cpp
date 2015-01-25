@@ -42,22 +42,15 @@ struct World::impl
 {
 
     // Entity objects.
-    std::vector<Entity*> entities;
+ //   std::vector<Entity*> entities;
     std::vector<Joint*> joints;
+
+    std::map<std::string, Entity*> entities;
 
     ODEWrapper simulator;
 
-    //Renderer* renderer;
-
     void updateEntities();
 
-    void waitForRender(_timeval&);
-
-    float frameTime;
-
-    const float framerate = 1./30.;
-
-    // Last render;
 
 };
 
@@ -71,7 +64,6 @@ int World::init()
 
     pimpl->simulator = ODEWrapper();
     pimpl->simulator.init();
-    pimpl->frameTime = 0;
 
 
     return 0;
@@ -86,16 +78,16 @@ int World::addEntity(Entity* e)
     switch(e->getGeometry()->getType())
     {
         case Geometry::Type::BOX:
-            ent = pimpl->simulator.addBox(e->getPosition(), dynamic_cast<Box*>(e->getGeometry())->getSides(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
+            ent = pimpl->simulator.addBox(e->getName(),e->getPosition(), dynamic_cast<Box*>(e->getGeometry())->getSides(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
             break;
         case Geometry::Type::SPHERE:
-            ent = pimpl->simulator.addSphere(e->getPosition(), dynamic_cast<Sphere*>(e->getGeometry())->getRadius(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
+            ent = pimpl->simulator.addSphere(e->getName(), e->getPosition(), dynamic_cast<Sphere*>(e->getGeometry())->getRadius(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
             break;
         case Geometry::Type::CYLINDER:
-            ent = pimpl->simulator.addCylinder(e->getPosition(), dynamic_cast<Cylinder*>(e->getGeometry())->getRadius(), dynamic_cast<Cylinder*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
+            ent = pimpl->simulator.addCylinder(e->getName(), e->getPosition(), dynamic_cast<Cylinder*>(e->getGeometry())->getRadius(), dynamic_cast<Cylinder*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
             break;
         case Geometry::Type::CAPSULE:
-            ent = pimpl->simulator.addCapsule(e->getPosition(), dynamic_cast<Capsule*>(e->getGeometry())->getRadius(), dynamic_cast<Capsule*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
+            ent = pimpl->simulator.addCapsule(e->getName(), e->getPosition(), dynamic_cast<Capsule*>(e->getGeometry())->getRadius(), dynamic_cast<Capsule*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
             break;
         case Geometry::Type::PLANE:
             ent = pimpl->simulator.addPlane(dynamic_cast<Plane*>(e->getGeometry())->getA(), dynamic_cast<Plane*>(e->getGeometry())->getB());
@@ -111,8 +103,7 @@ int World::addEntity(Entity* e)
         return -1;
     }
 
-    e->setID(pimpl->entities.size());
-    pimpl->entities.push_back(e);
+    pimpl->entities.insert(std::pair<std::string, Entity*>(e->getName(), e));
 
     return 0;
 }
@@ -122,7 +113,7 @@ int World::addJoint(Joint* j)
 
     switch(j->getType()) {
         case Joint::Type::HINGE:
-            pimpl->simulator.addHingeJoint(j->getParent()->getID(), j->getChild()->getID(), j->getPosition(), dynamic_cast<HingeJoint*>(j)->getAxis());
+            pimpl->simulator.addHingeJoint(j->getParent()->getName(), j->getChild()->getName(), j->getPosition(), dynamic_cast<HingeJoint*>(j)->getAxis());
             j->setID(pimpl->joints.size());
             pimpl->joints.push_back(j);
             break;
@@ -138,15 +129,15 @@ void World::impl::updateEntities()
 
     for (auto it = entities.begin(); it != entities.end(); it++)
     {
-        if ((*it)->getGeometry()->getType() == Geometry::Type::PLANE) { continue; }
-        (*it)->setPosition(simulator.getBodyPositionFromID((*it)->getID()));
-        (*it)->setRotation(simulator.getBodyRotationFromID((*it)->getID()));
+        if ((*it).second->getGeometry()->getType() == Geometry::Type::PLANE) { continue; }
+        (*it).second->setPosition(simulator.getBodyPositionFromName((*it).second->getName()));
+        (*it).second->setRotation(simulator.getBodyRotationFromName((*it).second->getName()));
     }
 
 }
 
 
-const std::vector<Entity*>& World::getEntities()
+const std::map<std::string, Entity*>& World::getEntities()
 {
     return pimpl->entities;
 
@@ -163,140 +154,11 @@ void World::step(float stepsize)
 
 void World::go(float stepsize)
 {
-#ifndef __APPLE__
-	timespec last;
-    clock_gettime(CLOCK_REALTIME, &last);
-#endif
-
-#ifdef __APPLE__
-    timeval last;
-    gettimeofday(&last, NULL);
-#endif
     while (true)
     {
         pimpl->simulator.step(stepsize);
 
         pimpl->updateEntities();
-        //pimpl->frameTime+= stepsize;
-
-
-        /*
-        if (pimpl->frameTime > pimpl->framerate)
-        {
-            pimpl->waitForRender(last);
-            //pimpl->renderer->render(pimpl->entities);
-            //pimpl->frameTime = 0;
-        }
-        */
     }
 }
 
-/*
-int main(int argc, char** argv)
-{
-
-    float STEPSIZE = 0.0001;
-
-    Renderer* r = new Renderer();
-    r->init();
-//    Renderer* r2 = new Renderer();
-//    r2->init();
-    World* world = new World();
-
-    World* w2 = new World();
-
-    world->init();
-    w2->init();
-
-    r->addPointLight(Vector3f(10,10,10));
-
-    Geometry* g = new Box(Vector3f(1,1,1));
-
-    Entity* e = new Entity(g, Vector3f(0,10,0), Vector3f(0,0,0), Quaternion<float>().fromEulerAngles(0,0,0));
-    e->setColor(Vector3f(1,.3,.3));
-    
-    Entity* e2 = new Entity(new Box(Vector3f(1,1,1)), Vector3f(1,11,0));
-    e2->setColor(Vector3f(0,.8,.2));
-    
-    Entity* e3 = new Entity(new Box(Vector3f(1,1,1)), Vector3f(-1,10,0));
-    e3->setColor(Vector3f(0,.4,.6));
-    
-
-
-    
-    
-    Entity* e3 = new Entity(new Cylinder(.5, 1), Vector3f(0,15,0));
-    e3->setColor(Vector3f(0,.4,.7));
-    
-    
-
-    
-    
-    Entity* e4 = new Entity(new Capsule(.5, 1), Vector3f(1,25,0));
-    e4->setColor(Vector3f(.8,.8,.2));
-    
-
-    w2->addEntity(e4);
-    
-
-    Entity* e5 = new Entity(new Sphere(.5), Vector3f(1.2,18,0));
-    e5->setColor(Vector3f(.5,.5,.5));
-    
-    
-    world->addEntity(e);
-    world->addEntity(e2);
-    world->addEntity(e3);
-
-    Joint* j = new HingeJoint(e, e2, Vector3f(.5, 10.5, 0));
-    Joint* j2 = new HingeJoint(e, e3, Vector3f(-.5, 9.5, 0));
-
-    world->addJoint(j);
-    world->addJoint(j2);
-  
-    world->addEntity(e3);
-    world->addEntity(e4);
-    world->addEntity(e5);
-    
-
-    Geometry* ground = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
-    Entity* groundEntity  = new Entity(ground);
-
-    
-    Geometry* g2 = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
-    Entity* g2e = new Entity(ground);
-    
-
-    world->addEntity(groundEntity);
-    w2->addEntity(groundEntity);
-
-//    world->go(STEPSIZE);
-//    w2->go(STEPSIZE);
-
-#ifndef __APPLE__
-	timespec last;
-    clock_gettime(CLOCK_REALTIME, &last);
-#endif
-
-#ifdef __APPLE__
-    timeval last;
-    gettimeofday(&last, NULL);
-#endif
-
-    float t = 0; 
-    float t_frame = 0;
-    float frameTime = 1./30.;
-    r->addWorldToRender(world);
-//    r->addWorldToRender(w2);
-    while (true) 
-    {
-        for (t_frame = 0; t_frame < frameTime; t_frame+=STEPSIZE) 
-        {
-            world->step(STEPSIZE);
-            w2->step(STEPSIZE);
-        }
-        waitForRender(last);
-        r->render();
-
-    }
-}
-*/
