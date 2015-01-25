@@ -23,6 +23,7 @@
 #include "entity/Plane.h"
 #include "entity/Geometry.h"
 #include "utils/utils.h"
+#include "world/world.h"
 
 struct Renderer::impl
 {
@@ -41,6 +42,8 @@ struct Renderer::impl
     void renderLine(Entity*);
 
     void setCamera();
+
+    std::vector<World*> worlds;
 
 };
 
@@ -67,6 +70,12 @@ int Renderer::init()
     return 0;
 
 
+}
+
+int Renderer::addWorldToRender(World* w)
+{
+    pimpl->worlds.push_back(w);
+    return 0;
 }
 
 int Renderer::addPointLight(Vector3f pos)
@@ -123,15 +132,20 @@ int Renderer::impl::initGL()
     return 0;
 
 }
+bool Renderer::INITIALIZED = false;
 
 int Renderer::impl::initGLFW()
 {
 
 
-	if (!glfwInit())
+    if (!INITIALIZED)
     {
-        std::cout << "Error initializing GLFW in initializeGLFW(), Renderer.cpp" << std::endl;
-		return -1;
+        if (!glfwInit())
+        {
+            std::cout << "Error initializing GLFW in initializeGLFW(), Renderer.cpp" << std::endl;
+            return -1;
+        }
+        INITIALIZED = true;
     }
 
     window = glfwCreateWindow(960,720,"Composability",NULL,NULL);
@@ -376,9 +390,10 @@ void Renderer::impl::renderLine(Entity* e)
 
 }
 
-int Renderer::render(const std::vector<Entity*>& e)
+int Renderer::render()
 {
 
+    glfwMakeContextCurrent(pimpl->window);
 
     pimpl->setCamera();
 
@@ -387,29 +402,33 @@ int Renderer::render(const std::vector<Entity*>& e)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    for (auto it=e.begin(); it != e.end(); it++)
-    {
 
-        switch ((*it)->getGeometry()->getType())
+    for (auto wIter = pimpl->worlds.begin(); wIter != pimpl->worlds.end(); wIter++)
+    {
+        for (auto it=(*wIter)->getEntities().begin(); it != (*wIter)->getEntities().end(); it++)
         {
-            case Geometry::Type::BOX:
-                pimpl->renderBox(*it);
-                break;
-            case Geometry::Type::CYLINDER:
-                pimpl->renderCylinder(*it);
-                break;
-            case Geometry::Type::CAPSULE:
-                pimpl->renderCapsule(*it);
-                break;
-            case Geometry::Type::PLANE:
-                pimpl->renderLine(*it);
-                break;
-            case Geometry::Type::SPHERE:
-                pimpl->renderSphere(*it);
-                break;
-            default:
-                std::cerr << "Renderer.cpp: Unknown Entity TYPE: " << (*it)->getGeometry()->getType() << std::endl;
-                break;
+
+            switch ((*it)->getGeometry()->getType())
+            {
+                case Geometry::Type::BOX:
+                    pimpl->renderBox(*it);
+                    break;
+                case Geometry::Type::CYLINDER:
+                    pimpl->renderCylinder(*it);
+                    break;
+                case Geometry::Type::CAPSULE:
+                    pimpl->renderCapsule(*it);
+                    break;
+                case Geometry::Type::PLANE:
+                    pimpl->renderLine(*it);
+                    break;
+                case Geometry::Type::SPHERE:
+                    pimpl->renderSphere(*it);
+                    break;
+                default:
+                    std::cerr << "Renderer.cpp: Unknown Entity TYPE: " << (*it)->getGeometry()->getType() << std::endl;
+                    break;
+            }
         }
 
     }
@@ -417,6 +436,7 @@ int Renderer::render(const std::vector<Entity*>& e)
     glFlush();
 
     glfwSwapBuffers(pimpl->window);
+
 
     return 0;
 }

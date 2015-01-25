@@ -5,18 +5,18 @@
 
 class Entity;
 class Joint;
-class Renderer;
 
 class World
 {
     public:
 
-        World(Renderer* r);
+        World();
 
         int init();
         int addEntity(Entity* e);
         int addJoint(Joint* j);
         int addPointLight(Vector3f pos);
+        const std::vector<Entity*>& getEntities();
         void go(float stepsize);
         void step(float stepsize);
 

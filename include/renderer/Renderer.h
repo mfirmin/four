@@ -3,7 +3,7 @@
 
 #include "vmath.h"
 
-class Entity;
+class World;
 
 class Renderer
 {
@@ -14,9 +14,11 @@ class Renderer
         int init();
 
         int addPointLight(Vector3f);
-        int render(const std::vector<Entity*>&);
+        int addWorldToRender(World*);
+        int render();
 
     private:
+        static bool INITIALIZED;
 
         struct impl;
         impl* pimpl;

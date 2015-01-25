@@ -47,7 +47,7 @@ struct World::impl
 
     ODEWrapper simulator;
 
-    Renderer* renderer;
+    //Renderer* renderer;
 
     void updateEntities();
 
@@ -61,10 +61,9 @@ struct World::impl
 
 };
 
-World::World(Renderer* r) 
+World::World() 
 {
     pimpl = new impl();
-    pimpl->renderer = r;
 }
 
 int World::init()
@@ -77,17 +76,6 @@ int World::init()
 
     return 0;
 
-
-}
-
-int World::addPointLight(Vector3f pos)
-{
-    if (pimpl->renderer->addPointLight(pos) != 0)
-    {
-        std::cerr << "Error adding point light (world.cpp)" << std::endl;
-        return -1;
-    }
-    return 0;
 
 }
 
@@ -157,8 +145,9 @@ void World::impl::updateEntities()
 
 }
 
-void World::impl::waitForRender(_timeval& last)
+void waitForRender(_timeval& last)
 {
+    float framerate = 1./30.;
 	long frame = (framerate * 1E9);
     int i = 0;
     _timeval now;
@@ -185,12 +174,18 @@ void World::impl::waitForRender(_timeval& last)
 
 }
 
+const std::vector<Entity*>& World::getEntities()
+{
+    return pimpl->entities;
+
+}
+
 void World::step(float stepsize)
 {
     pimpl->simulator.step(stepsize);
 
     pimpl->updateEntities();
-    pimpl->frameTime+= stepsize;
+    //pimpl->frameTime+= stepsize;
 
 }
 
@@ -210,15 +205,17 @@ void World::go(float stepsize)
         pimpl->simulator.step(stepsize);
 
         pimpl->updateEntities();
-        pimpl->frameTime+= stepsize;
+        //pimpl->frameTime+= stepsize;
 
 
+        /*
         if (pimpl->frameTime > pimpl->framerate)
         {
             pimpl->waitForRender(last);
-            pimpl->renderer->render(pimpl->entities);
-            pimpl->frameTime = 0;
+            //pimpl->renderer->render(pimpl->entities);
+            //pimpl->frameTime = 0;
         }
+        */
     }
 }
 
@@ -229,14 +226,16 @@ int main(int argc, char** argv)
 
     Renderer* r = new Renderer();
     r->init();
-    World* world = new World(r);
+//    Renderer* r2 = new Renderer();
+//    r2->init();
+    World* world = new World();
 
-    World* w2 = new World(r);
+    World* w2 = new World();
 
     world->init();
     w2->init();
 
-    world->addPointLight(Vector3f(10,10,10));
+    r->addPointLight(Vector3f(10,10,10));
 
     Geometry* g = new Box(Vector3f(1,1,1));
 
@@ -259,8 +258,10 @@ int main(int argc, char** argv)
     
 
     
+    
     Entity* e4 = new Entity(new Capsule(.5, 1), Vector3f(1,25,0));
     e4->setColor(Vector3f(.8,.8,.2));
+    
 
     w2->addEntity(e4);
     /*
@@ -287,13 +288,41 @@ int main(int argc, char** argv)
     Geometry* ground = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
     Entity* groundEntity  = new Entity(ground);
 
+    
     Geometry* g2 = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
     Entity* g2e = new Entity(ground);
+    
 
     world->addEntity(groundEntity);
     w2->addEntity(groundEntity);
 
-    world->go(STEPSIZE);
-    w2->go(STEPSIZE);
+//    world->go(STEPSIZE);
+//    w2->go(STEPSIZE);
 
+#ifndef __APPLE__
+	timespec last;
+    clock_gettime(CLOCK_REALTIME, &last);
+#endif
+
+#ifdef __APPLE__
+    timeval last;
+    gettimeofday(&last, NULL);
+#endif
+
+    float t = 0; 
+    float t_frame = 0;
+    float frameTime = 1./30.;
+    r->addWorldToRender(world);
+    r->addWorldToRender(w2);
+    while (true) 
+    {
+        for (t_frame = 0; t_frame < frameTime; t_frame+=STEPSIZE) 
+        {
+            world->step(STEPSIZE);
+            w2->step(STEPSIZE);
+        }
+        waitForRender(last);
+        r->render();
+
+    }
 }
