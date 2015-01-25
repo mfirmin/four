@@ -145,34 +145,6 @@ void World::impl::updateEntities()
 
 }
 
-void waitForRender(_timeval& last)
-{
-    float framerate = 1./30.;
-	long frame = (framerate * 1E9);
-    int i = 0;
-    _timeval now;
-#ifndef __APPLE__
-    clock_gettime(CLOCK_REALTIME, &now);
-    while ( (now.tv_sec * 1E9 + now.tv_nsec) - (last.tv_sec * 1E9 + last.tv_nsec) < frame)
-    {
-        clock_gettime(CLOCK_REALTIME, &now);
-    }
-
-    clock_gettime(CLOCK_REALTIME, &last);
-#endif
-    
-#ifdef __APPLE__
-    gettimeofday(&now, NULL);
-    while ( (now.tv_sec * 1E9 + now.tv_usec * 1E3) - (last.tv_sec * 1E9 + last.tv_usec * 1E3) < frame)
-    {
-        gettimeofday(&now, NULL);
-        i++;
-    }
-
-    gettimeofday(&last, NULL);
-#endif
-
-}
 
 const std::vector<Entity*>& World::getEntities()
 {
@@ -219,6 +191,7 @@ void World::go(float stepsize)
     }
 }
 
+/*
 int main(int argc, char** argv)
 {
 
@@ -251,10 +224,10 @@ int main(int argc, char** argv)
 
 
     
-    /*
+    
     Entity* e3 = new Entity(new Cylinder(.5, 1), Vector3f(0,15,0));
     e3->setColor(Vector3f(0,.4,.7));
-    */
+    
     
 
     
@@ -264,12 +237,12 @@ int main(int argc, char** argv)
     
 
     w2->addEntity(e4);
-    /*
+    
 
     Entity* e5 = new Entity(new Sphere(.5), Vector3f(1.2,18,0));
     e5->setColor(Vector3f(.5,.5,.5));
     
-    */
+    
     world->addEntity(e);
     world->addEntity(e2);
     world->addEntity(e3);
@@ -279,11 +252,11 @@ int main(int argc, char** argv)
 
     world->addJoint(j);
     world->addJoint(j2);
-    /*
+  
     world->addEntity(e3);
     world->addEntity(e4);
     world->addEntity(e5);
-    */
+    
 
     Geometry* ground = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
     Entity* groundEntity  = new Entity(ground);
@@ -313,7 +286,7 @@ int main(int argc, char** argv)
     float t_frame = 0;
     float frameTime = 1./30.;
     r->addWorldToRender(world);
-    r->addWorldToRender(w2);
+//    r->addWorldToRender(w2);
     while (true) 
     {
         for (t_frame = 0; t_frame < frameTime; t_frame+=STEPSIZE) 
@@ -326,3 +299,4 @@ int main(int argc, char** argv)
 
     }
 }
+*/

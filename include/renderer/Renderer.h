@@ -15,6 +15,7 @@ class Renderer
 
         int addPointLight(Vector3f);
         int addWorldToRender(World*);
+        void waitForRender();
         int render();
 
     private:

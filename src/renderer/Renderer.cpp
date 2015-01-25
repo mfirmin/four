@@ -9,6 +9,12 @@
 	#include <GL/glu.h>
 #endif
 
+#include <time.h>
+
+#ifdef __APPLE__
+#include <sys/time.h>
+#endif
+
 #include <GLFW/glfw3.h>
 
 #include <vector>
@@ -25,6 +31,13 @@
 #include "utils/utils.h"
 #include "world/world.h"
 
+#ifdef __APPLE__
+typedef timeval _timeval;
+#endif
+#ifndef __APPLE__
+typedef timespec _timeval;
+#endif
+
 struct Renderer::impl
 {
 
@@ -32,6 +45,8 @@ struct Renderer::impl
     int initGLFW();
 
     float zoom;
+
+    const float frametime = 1./30.;
 
     GLFWwindow* window;
 
@@ -45,12 +60,54 @@ struct Renderer::impl
 
     std::vector<World*> worlds;
 
+	_timeval last;
+
 };
+
+
+void Renderer::waitForRender()
+{
+    float framerate = 1./30.;
+	long frame = (framerate * 1E9);
+    int i = 0;
+    _timeval now;
+
+#ifndef __APPLE__
+    clock_gettime(CLOCK_REALTIME, &now);
+    while ( (now.tv_sec * 1E9 + now.tv_nsec) - (pimpl->last.tv_sec * 1E9 + pimpl->last.tv_nsec) < frame)
+    {
+        clock_gettime(CLOCK_REALTIME, &now);
+    }
+
+    clock_gettime(CLOCK_REALTIME, &(pimpl->last));
+#endif
+    
+#ifdef __APPLE__
+    gettimeofday(&now, NULL);
+    while ( (now.tv_sec * 1E9 + now.tv_usec * 1E3) - (pimpl->last.tv_sec * 1E9 + pimpl->last.tv_usec * 1E3) < frame)
+    {
+        gettimeofday(&now, NULL);
+        i++;
+    }
+
+    gettimeofday(&(pimpl->last), NULL);
+#endif
+
+}
 
 Renderer::Renderer() 
 {
     pimpl = new impl();
     pimpl->zoom = 1;
+
+#ifndef __APPLE__
+    clock_gettime(CLOCK_REALTIME, &(pimpl->last));
+#endif
+
+#ifdef __APPLE__
+    gettimeofday(&(pimpl->last), NULL);
+#endif
+
 }
 
 int Renderer::init()
