@@ -9,7 +9,6 @@ class ODEWrapper
 
         ODEWrapper();
 
-
         int init();
         int addCube(Vector3f pos, float sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass);
         int addBox(Vector3f pos, Vector3f sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass);
@@ -23,7 +22,9 @@ class ODEWrapper
 
         void step(float);
 
+
     private:
+        static bool INITIALIZED;
 
         struct impl;
         impl* pimpl;

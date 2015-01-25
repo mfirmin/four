@@ -30,9 +30,15 @@ struct ODEWrapper::impl
     static void nearCallback(void*, dGeomID, dGeomID);
 };
 
+bool ODEWrapper::INITIALIZED = false;
+
 ODEWrapper::ODEWrapper() 
 {
-	dInitODE();
+    if (!INITIALIZED) 
+    {
+        dInitODE();
+        INITIALIZED = true;
+    }
     pimpl = new impl();
 }
 

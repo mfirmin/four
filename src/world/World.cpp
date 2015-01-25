@@ -47,7 +47,7 @@ struct World::impl
 
     ODEWrapper simulator;
 
-    Renderer renderer;
+    Renderer* renderer;
 
     void updateEntities();
 
@@ -61,9 +61,10 @@ struct World::impl
 
 };
 
-World::World() 
+World::World(Renderer* r) 
 {
     pimpl = new impl();
+    pimpl->renderer = r;
 }
 
 int World::init()
@@ -71,10 +72,8 @@ int World::init()
 
     pimpl->simulator = ODEWrapper();
     pimpl->simulator.init();
-    pimpl->renderer = Renderer();
     pimpl->frameTime = 0;
 
-    pimpl->renderer.init();
 
     return 0;
 
@@ -83,7 +82,7 @@ int World::init()
 
 int World::addPointLight(Vector3f pos)
 {
-    if (pimpl->renderer.addPointLight(pos) != 0)
+    if (pimpl->renderer->addPointLight(pos) != 0)
     {
         std::cerr << "Error adding point light (world.cpp)" << std::endl;
         return -1;
@@ -186,6 +185,15 @@ void World::impl::waitForRender(_timeval& last)
 
 }
 
+void World::step(float stepsize)
+{
+    pimpl->simulator.step(stepsize);
+
+    pimpl->updateEntities();
+    pimpl->frameTime+= stepsize;
+
+}
+
 void World::go(float stepsize)
 {
 #ifndef __APPLE__
@@ -208,7 +216,7 @@ void World::go(float stepsize)
         if (pimpl->frameTime > pimpl->framerate)
         {
             pimpl->waitForRender(last);
-            pimpl->renderer.render(pimpl->entities);
+            pimpl->renderer->render(pimpl->entities);
             pimpl->frameTime = 0;
         }
     }
@@ -219,9 +227,14 @@ int main(int argc, char** argv)
 
     float STEPSIZE = 0.0001;
 
-    World* world = new World();
+    Renderer* r = new Renderer();
+    r->init();
+    World* world = new World(r);
+
+    World* w2 = new World(r);
 
     world->init();
+    w2->init();
 
     world->addPointLight(Vector3f(10,10,10));
 
@@ -235,15 +248,22 @@ int main(int argc, char** argv)
     
     Entity* e3 = new Entity(new Box(Vector3f(1,1,1)), Vector3f(-1,10,0));
     e3->setColor(Vector3f(0,.4,.6));
+    
 
 
+    
     /*
     Entity* e3 = new Entity(new Cylinder(.5, 1), Vector3f(0,15,0));
     e3->setColor(Vector3f(0,.4,.7));
+    */
+    
 
     
     Entity* e4 = new Entity(new Capsule(.5, 1), Vector3f(1,25,0));
     e4->setColor(Vector3f(.8,.8,.2));
+
+    w2->addEntity(e4);
+    /*
 
     Entity* e5 = new Entity(new Sphere(.5), Vector3f(1.2,18,0));
     e5->setColor(Vector3f(.5,.5,.5));
@@ -267,8 +287,13 @@ int main(int argc, char** argv)
     Geometry* ground = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
     Entity* groundEntity  = new Entity(ground);
 
+    Geometry* g2 = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
+    Entity* g2e = new Entity(ground);
+
     world->addEntity(groundEntity);
+    w2->addEntity(groundEntity);
 
     world->go(STEPSIZE);
+    w2->go(STEPSIZE);
 
 }
