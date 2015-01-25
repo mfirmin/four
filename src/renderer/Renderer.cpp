@@ -67,8 +67,7 @@ struct Renderer::impl
 
 void Renderer::waitForRender()
 {
-    float framerate = 1./30.;
-	long frame = (framerate * 1E9);
+	long frame = (pimpl->frametime * 1E9);
     int i = 0;
     _timeval now;
 
