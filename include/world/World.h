@@ -6,6 +6,7 @@
 
 class Entity;
 class Joint;
+class Character;
 
 class World
 {
@@ -15,6 +16,7 @@ class World
 
         int init();
         int addEntity(Entity* e);
+        int addCharacter(Character* c);
         int addJoint(Joint* j);
         int addPointLight(Vector3f pos);
         const std::map<std::string, Entity*>& getEntities();

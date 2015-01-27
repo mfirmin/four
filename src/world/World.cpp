@@ -28,6 +28,7 @@
 #include "vmath.h"
 #include "physics/ODEWrapper.h"
 #include "entity/Entity.h"
+#include "character/Character.h"
 #include "renderer/Renderer.h"
 
 
@@ -70,6 +71,19 @@ int World::init()
     return 0;
 
 
+}
+
+int World::addCharacter(Character* c) 
+{
+    for (auto it = c->getEntities().begin(); it != c->getEntities().end(); it++)
+    {
+        this->addEntity(it->second);
+    }
+    for (auto it = c->getJoints().begin(); it != c->getJoints().end(); it++)
+    {
+        this->addJoint(it->second);
+    }
+    return 0;
 }
 
 int World::addEntity(Entity* e)

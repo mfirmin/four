@@ -19,6 +19,7 @@
 
 #include "joint/Joint.h"
 #include "joint/HingeJoint.h"
+#include "character/Character.h"
 
 #include "vmath.h"
 #include "physics/ODEWrapper.h"
@@ -83,18 +84,46 @@ int main(int argc, char** argv)
     
     w2->addEntity(groundEntity);
 
+    World* w3 = new World();
+    w3->init();
+
+    Entity* body = new Entity(std::string("body"), new Sphere(.5), Vector3f(0,.5,0));
+    Entity* torso = new Entity(std::string("torso"), new Sphere(.4), Vector3f(0,1.4,0));
+    Entity* head = new Entity(std::string("head"), new Sphere(.3), Vector3f(.01,2.1, 0));
+
+    Joint* hips = new HingeJoint(std::string("hips"), body, torso, Vector3f(0,1,0));
+    Joint* neck = new HingeJoint(std::string("neck"), torso, head, Vector3f(0,1.8,0));
+
+    Character* snowman = new Character(std::string("snowman"));
+    snowman->addEntity(body);
+    snowman->addEntity(torso);
+    snowman->addEntity(head);
+    snowman->addJoint(hips);
+    snowman->addJoint(neck);
+    w3->addCharacter(snowman);
+
+    Geometry* g3 = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
+    Entity* g3e = new Entity(std::string("cap2"), ground);
+    
+    w3->addEntity(groundEntity);
+
+
 
     float t = 0; 
     float t_frame = 0;
     float frameTime = 1./30.;
+    /*
     r->addWorldToRender(world);
     r->addWorldToRender(w2);
+    */
+    r->addWorldToRender(w3);
     while (true) 
     {
         for (t_frame = 0; t_frame < frameTime; t_frame+=STEPSIZE) 
         {
             world->step(STEPSIZE);
             w2->step(STEPSIZE);
+            w3->step(STEPSIZE);
         }
         r->waitForRender();
         r->render();
