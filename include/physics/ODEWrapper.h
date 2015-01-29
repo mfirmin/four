@@ -21,6 +21,8 @@ class ODEWrapper
         Vector3f getBodyPositionFromName(std::string name);
         Quaternion<float> getBodyRotationFromName(std::string name);
 
+        void setHingeJointTorque(std::string jointName, float t);
+
         void step(float);
 
 

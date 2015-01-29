@@ -205,6 +205,10 @@ void nearCallback(void *data, dGeomID o1, dGeomID o2)
 	dBodyID b1 = dGeomGetBody(o1);
 	dBodyID b2 = dGeomGetBody(o2);
 
+    if (dAreConnected(b1, b2)) {
+            return;
+    }
+
 
     //if (dBodyGetWorld(b1) != dBodyGetWorld(b2)) { return; }
 
@@ -267,6 +271,13 @@ void ODEWrapper::step(float timestep)
     dSpaceCollide(pimpl->space, (void*)(ncd), &(nearCallback));
     dWorldQuickStep(pimpl->world, timestep);
     dJointGroupEmpty(pimpl->contactgroup);
+}
+void ODEWrapper::setHingeJointTorque(std::string jointName, float torque) 
+{
+
+    dJointID jID = pimpl->joints.find(jointName)->second;
+    dJointAddHingeTorque(jID, torque);
+
 }
 
 /*

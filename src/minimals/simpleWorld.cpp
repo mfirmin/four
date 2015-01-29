@@ -89,10 +89,10 @@ int main(int argc, char** argv)
 
     Entity* body = new Entity(std::string("body"), new Sphere(.5), Vector3f(0,.5,0));
     Entity* torso = new Entity(std::string("torso"), new Sphere(.4), Vector3f(0,1.4,0));
-    Entity* head = new Entity(std::string("head"), new Sphere(.3), Vector3f(.01,2.1, 0));
+    Entity* head = new Entity(std::string("head"), new Sphere(.3), Vector3f(0,2.1, 0));
 
-    Joint* hips = new HingeJoint(std::string("hips"), body, torso, Vector3f(0,1,0));
-    Joint* neck = new HingeJoint(std::string("neck"), torso, head, Vector3f(0,1.8,0));
+    Joint* hips = new HingeJoint(std::string("hips"), body, torso, Vector3f(0,1,0), Vector3f(0,0,1), 0, -.1, .1);
+    Joint* neck = new HingeJoint(std::string("neck"), torso, head, Vector3f(0,1.8,0), Vector3f(0,0,1), 0, -1, 1);
 
     Character* snowman = new Character(std::string("snowman"));
     snowman->addEntity(body);
@@ -121,6 +121,8 @@ int main(int argc, char** argv)
     {
         for (t_frame = 0; t_frame < frameTime; t_frame+=STEPSIZE) 
         {
+            neck->addTorque(Vector3f(0,0,-1));
+            hips->addTorque(Vector3f(0,0,1));
             world->step(STEPSIZE);
             w2->step(STEPSIZE);
             w3->step(STEPSIZE);

@@ -31,21 +31,22 @@ class Joint
         // Physical Properties
 
         std::string getName();
-        void setName(std::string);
         Vector3f getPosition();
         Vector3f getJointAngle();
         Vector3f getCurrTorque();
         Vector3f getTorqueLimit();
         Vector3f getAngleLimitMin();
         Vector3f getAngleLimitMax();
+        void setCurrTorque(Vector3f);
+        void resetCurrTorque();
+        void setName(std::string);
 
         void setID(int);
         int getID();
 
-        enum Type { HINGE, BALL };
-
         void addTorque(Vector3f t);
 
+        enum Type { HINGE, BALL };
         virtual Type getType() = 0;
 
     private:

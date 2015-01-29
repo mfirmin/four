@@ -52,6 +52,7 @@ struct World::impl
     ODEWrapper simulator;
 
     void updateEntities();
+    void setSimulationTorques();
 
 
 };
@@ -128,7 +129,7 @@ int World::addJoint(Joint* j)
 
     switch(j->getType()) {
         case Joint::Type::HINGE:
-            pimpl->simulator.addHingeJoint(j->getName(), j->getParent()->getName(), j->getChild()->getName(), j->getPosition(), dynamic_cast<HingeJoint*>(j)->getAxis());
+            pimpl->simulator.addHingeJoint(j->getName(), j->getParent()->getName(), j->getChild()->getName(), j->getPosition(), dynamic_cast<HingeJoint*>(j)->getAxis(), j->getAngleLimitMin().z, j->getAngleLimitMax().z);
             pimpl->joints.insert(std::pair<std::string, Joint*>(j->getName(), j));
             break;
         case Joint::Type::BALL:
@@ -157,8 +158,40 @@ const std::map<std::string, Entity*>& World::getEntities()
 
 }
 
+void World::impl::setSimulationTorques() 
+{
+    for (auto it = joints.begin(); it != joints.end(); it++) {
+
+        Vector3f torque = it->second->getCurrTorque();
+        Vector3f maxTorque = it->second->getTorqueLimit();
+        if (torque.x > maxTorque.x) { torque.x = maxTorque.x; }
+        else if (torque.x < -maxTorque.x) { torque.x = -maxTorque.x; }
+        if (torque.y > maxTorque.y) { torque.y = maxTorque.y; }
+        else if (torque.y < -maxTorque.y) { torque.y = -maxTorque.y; }
+        if (torque.z > maxTorque.z) { torque.z = maxTorque.z; }
+        else if (torque.z < -maxTorque.z) { torque.z = -maxTorque.z; }
+
+        Joint* j = joints.find(it->second->getName())->second;
+        switch(j->getType()) 
+        {
+            case Joint::Type::HINGE:
+                simulator.setHingeJointTorque(it->second->getName(), torque.z);
+                break;
+            case Joint::Type::BALL:
+                std::cerr << "Ball joints not yet implemented" << std::endl;
+                break;
+        }
+
+        it->second->resetCurrTorque();
+
+    }
+
+}
+
 void World::step(float stepsize)
 {
+    pimpl->setSimulationTorques();
+
     pimpl->simulator.step(stepsize);
 
     pimpl->updateEntities();

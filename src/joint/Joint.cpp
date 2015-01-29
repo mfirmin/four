@@ -46,6 +46,13 @@ Joint::Joint(std::string n, Entity* e1, Entity* e2, Vector3f pos, Vector3f ang, 
 
 }
 
+void Joint::resetCurrTorque() {
+    this->setCurrTorque(Vector3f(0,0,0));
+}
+void Joint::setCurrTorque(Vector3f t) {
+    pimpl->currTorque = t;
+}
+
 void Joint::setID(int id) {
     pimpl->ID = id;
 }
@@ -70,7 +77,6 @@ Entity* Joint::getParent() {
 Vector3f Joint::getPosition() {
     return pimpl->pos;
 }
-
 Vector3f Joint::getJointAngle() {
     return pimpl->ang;
 }
