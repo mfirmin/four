@@ -20,6 +20,8 @@ class Character
         const std::map<std::string, Entity*>& getEntities();
         const std::map<std::string, Joint*>& getJoints();
 
+        int initFromFile(std::string ifname);
+
 
     private:
 
