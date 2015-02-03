@@ -13,6 +13,9 @@ namespace utils
 
     void setMFromRAndP(float* M, Quaternion<float> R, Vector3f pos);
 
+    float deg2rad(float d); 
+    float rad2deg(float r);
+
 }
 
 #endif // UTILS_H

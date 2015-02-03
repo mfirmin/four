@@ -61,11 +61,16 @@ int main(int argc, char** argv)
     w->addCharacter(snowman);
     */
 
-    Geometry* g = new Plane(Vector3f(-50, -1, 0), Vector3f(50, -1, 0));
-    Entity* ge = new Entity(std::string("cap2"), ground);
+    Geometry* g = new Plane(Vector3f(-50, 0, 0), Vector3f(50, 0, 0));
+    Entity* ge = new Entity(std::string("ground"), g);
     
-    world->addEntity(groundEntity);
+    world->addEntity(ge);
 
+    Character* human = new Character(std::string("h"));
+    //human->initFromFile("inputs/characters/human.char");
+    human->initFromFile("inputs/characters/test.char");
+
+    world->addCharacter(human);
 
 
     float t = 0; 
@@ -73,7 +78,8 @@ int main(int argc, char** argv)
     float frameTime = 1./30.;
 
     r->addWorldToRender(world);
-    while (true) 
+    int i = 0;
+    while (i < 1) 
     {
         for (t_frame = 0; t_frame < frameTime; t_frame+=STEPSIZE) 
         {
@@ -81,5 +87,7 @@ int main(int argc, char** argv)
         }
         r->waitForRender();
         r->render();
+//        i++;
     }
+    while (true) {}
 }

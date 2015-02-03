@@ -104,14 +104,14 @@ dBodyID ODEWrapper::impl::addBody(ODEWrapper*, dGeomID&, Vector3f pos, Vector3f 
     return id;
 }
 
-int ODEWrapper::addCube(std::string name, Vector3f pos, float sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addCube(std::string name, float mass, Vector3f pos, float sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0)
 {
 
-    return addBox(name, pos, Vector3f(sides, sides, sides), vel0, ang0, ang_vel0, mass);
+    return addBox(name, mass, pos, Vector3f(sides, sides, sides), vel0, ang0, ang_vel0);
 
 }
 
-int ODEWrapper::addBox(std::string name, Vector3f pos, Vector3f sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addBox(std::string name, float mass, Vector3f pos, Vector3f sides, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0)
 {
     dMass m;
 	dMassSetBoxTotal(&m, mass, sides.x, sides.y, sides.z);
@@ -128,7 +128,7 @@ int ODEWrapper::addBox(std::string name, Vector3f pos, Vector3f sides, Vector3f 
 
 }
 
-int ODEWrapper::addCylinder(std::string name, Vector3f pos, float rad, float h, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addCylinder(std::string name, float mass, Vector3f pos, float rad, float h, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0)
 {
     dMass m;
     dMassSetCylinderTotal(&m, mass, 3, rad, h);
@@ -140,7 +140,7 @@ int ODEWrapper::addCylinder(std::string name, Vector3f pos, float rad, float h, 
     return pimpl->bodies.size()-1;
 }
 
-int ODEWrapper::addSphere(std::string name, Vector3f pos, float rad, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addSphere(std::string name, float mass, Vector3f pos, float rad, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0)
 {
     dMass m;
     dMassSetSphere(&m, mass, rad);
@@ -151,7 +151,7 @@ int ODEWrapper::addSphere(std::string name, Vector3f pos, float rad, Vector3f ve
     pimpl->bodies.insert(std::pair<std::string, dBodyID>(name, id));
     return pimpl->bodies.size()-1;
 }
-int ODEWrapper::addCapsule(std::string name, Vector3f pos, float rad, float h, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0, float mass)
+int ODEWrapper::addCapsule(std::string name, float mass, Vector3f pos, float rad, float h, Vector3f vel0, Quaternion<float> ang0, Vector3f ang_vel0)
 {
     dMass m;
     dMassSetCapsule(&m, mass, 3, rad, h);

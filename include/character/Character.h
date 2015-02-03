@@ -4,6 +4,9 @@
 #include "vmath.h"
 
 #include <string>
+#include <iostream>
+#include <fstream>
+
 class Entity;
 class Joint;
 
@@ -19,8 +22,9 @@ class Character
         void addJoint(Joint*);
         const std::map<std::string, Entity*>& getEntities();
         const std::map<std::string, Joint*>& getJoints();
+        Joint* readJoint(std::ifstream& ifs);
 
-        int initFromFile(std::string ifname);
+        int initFromFile(const char* ifname);
 
 
     private:
