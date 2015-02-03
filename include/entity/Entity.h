@@ -10,7 +10,7 @@ class Entity
 {
     public:
 
-        Entity(std::string name, Geometry*, Vector3f p=Vector3f(0,0,0), Vector3f v=Vector3f(0,0,0), Quaternion<float> r=Quaternion<float>().fromEulerAngles(0,0,0), Vector3f w=Vector3f(0,0,0));
+        Entity(std::string name, Geometry*, float m=1, Vector3f p=Vector3f(0,0,0), Vector3f v=Vector3f(0,0,0), Quaternion<float> r=Quaternion<float>().fromEulerAngles(0,0,0), Vector3f w=Vector3f(0,0,0));
 
         int init();
 
@@ -29,6 +29,8 @@ class Entity
         void setOmega(Vector3f);
         Geometry* getGeometry();
         void setGeometry(Geometry*);
+        float getMass();
+        void setMass(float);
 
         void setID(int);
         int getID();

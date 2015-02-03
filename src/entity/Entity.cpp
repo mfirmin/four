@@ -18,6 +18,7 @@ struct Entity::impl
     Vector3f ang_vel;
     Vector3f color;
     float opacity;
+    float mass;
 
     Geometry* geom;
 
@@ -25,13 +26,14 @@ struct Entity::impl
     
 };
 
-Entity::Entity(std::string n, Geometry* g, Vector3f p, Vector3f v, Quaternion<float> r, Vector3f w) 
+Entity::Entity(std::string n, Geometry* g, float m, Vector3f p, Vector3f v, Quaternion<float> r, Vector3f w) 
 {
     pimpl = new impl();
     pimpl->name = n;
     pimpl->pos = p;
     pimpl->vel = v;
     pimpl->rot = r;
+    pimpl->mass = m;
     pimpl->ang_vel= w;
 
     pimpl->color = Vector3f(.5,.5,.5);
@@ -109,6 +111,12 @@ Vector3f Entity::getVelocity()
 void Entity::setVelocity(Vector3f vel)
 {
     pimpl->vel = vel;
+}
+float Entity::getMass() {
+    return pimpl->mass;
+}
+void Entity::setMass(float m) {
+    pimpl->mass = m;
 }
 Quaternion<float> Entity::getRotationAsQuaternion()
 {

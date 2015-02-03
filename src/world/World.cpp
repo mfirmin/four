@@ -94,16 +94,16 @@ int World::addEntity(Entity* e)
     switch(e->getGeometry()->getType())
     {
         case Geometry::Type::BOX:
-            ent = pimpl->simulator.addBox(e->getName(),e->getPosition(), dynamic_cast<Box*>(e->getGeometry())->getSides(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
+            ent = pimpl->simulator.addBox(e->getName(),e->getMass(), e->getPosition(), dynamic_cast<Box*>(e->getGeometry())->getSides(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega());
             break;
         case Geometry::Type::SPHERE:
-            ent = pimpl->simulator.addSphere(e->getName(), e->getPosition(), dynamic_cast<Sphere*>(e->getGeometry())->getRadius(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
+            ent = pimpl->simulator.addSphere(e->getName(), e->getMass(), e->getPosition(), dynamic_cast<Sphere*>(e->getGeometry())->getRadius(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega());
             break;
         case Geometry::Type::CYLINDER:
-            ent = pimpl->simulator.addCylinder(e->getName(), e->getPosition(), dynamic_cast<Cylinder*>(e->getGeometry())->getRadius(), dynamic_cast<Cylinder*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
+            ent = pimpl->simulator.addCylinder(e->getName(), e->getMass(),e->getPosition(), dynamic_cast<Cylinder*>(e->getGeometry())->getRadius(), dynamic_cast<Cylinder*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega());
             break;
         case Geometry::Type::CAPSULE:
-            ent = pimpl->simulator.addCapsule(e->getName(), e->getPosition(), dynamic_cast<Capsule*>(e->getGeometry())->getRadius(), dynamic_cast<Capsule*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega(), 10);
+            ent = pimpl->simulator.addCapsule(e->getName(), e->getMass(), e->getPosition(), dynamic_cast<Capsule*>(e->getGeometry())->getRadius(), dynamic_cast<Capsule*>(e->getGeometry())->getHeight(), e->getVelocity(), e->getRotationAsQuaternion(), e->getOmega());
             break;
         case Geometry::Type::PLANE:
             ent = pimpl->simulator.addPlane(dynamic_cast<Plane*>(e->getGeometry())->getA(), dynamic_cast<Plane*>(e->getGeometry())->getB());

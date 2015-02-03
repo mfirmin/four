@@ -54,4 +54,7 @@ namespace utils
         M[3] = 0;    M[7] = 0;    M[11] = 0;     M[15] = 1;
     }
 
+    float deg2rad(float d) { return d*3.14159/180.; }
+    float rad2deg(float r) { return r*180./3.14159; }
+
 }
