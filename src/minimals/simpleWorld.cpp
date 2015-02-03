@@ -67,8 +67,7 @@ int main(int argc, char** argv)
     world->addEntity(ge);
 
     Character* human = new Character(std::string("h"));
-    //human->initFromFile("inputs/characters/human.char");
-    human->initFromFile("inputs/characters/test.char");
+    human->initFromFile("inputs/characters/human.char");
 
     world->addCharacter(human);
 
