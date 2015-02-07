@@ -3,7 +3,7 @@
 
 #include <vector>
 #include "vmath.h"
-#include "entity/Geometry.h"
+#include "entity/geometry.h"
 
 class Plane : public Geometry
 {

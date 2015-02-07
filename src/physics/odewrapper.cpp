@@ -12,7 +12,7 @@
 #include <string>
 #include <map>
 
-#include "physics/ODEWrapper.h"
+#include "physics/odewrapper.h"
 #include "vmath.h"
 
 struct ODEWrapper::impl

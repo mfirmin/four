@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-#include "entity/Box.h"
+#include "entity/box.h"
 
 struct Box::impl
 {

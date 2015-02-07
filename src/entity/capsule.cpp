@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <iostream>
 
-#include "entity/Cylinder.h"
+#include "entity/capsule.h"
 
-struct Cylinder::impl
+struct Capsule::impl
 {
 
     float radius;
@@ -12,34 +12,34 @@ struct Cylinder::impl
     
 };
 
-Cylinder::Cylinder(float r, float h) 
+Capsule::Capsule(float r, float h) 
 {
     pimpl = new impl();
     pimpl->radius = r;
     pimpl->height = h;
 }
 
-int Cylinder::init()
+int Capsule::init()
 {
     return 0;
 }
 
-float Cylinder::getRadius()
+float Capsule::getRadius()
 {
     return pimpl->radius;
 
 }
-float Cylinder::getHeight()
+float Capsule::getHeight()
 {
     return pimpl->height;
 
 }
 
-void Cylinder::setRadius(float r)
+void Capsule::setRadius(float r)
 {
     pimpl->radius = r;
 }
-void Cylinder::setHeight(float h)
+void Capsule::setHeight(float h)
 {
     pimpl->height = h;
 }
