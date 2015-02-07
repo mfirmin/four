@@ -1,7 +1,7 @@
 #ifndef GEOMETRY_H
 #define GEOMETRY_H
 
-#include "../math/VECTOR.h"
+#include "vmath.h"
 
 class Geometry
 {
@@ -11,7 +11,7 @@ class Geometry
 
         int init();
 
-        enum Type { BOX, PLANE, N_TYPES };
+        enum Type { BOX, PLANE, CYLINDER, CAPSULE, SPHERE, N_TYPES };
 
         virtual Type getType() = 0;
 

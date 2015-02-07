@@ -2,11 +2,9 @@
 #include <stdlib.h>
 #include <iostream>
 
-#include <vector>
+#include "vmath.h"
 
-#include "../math/VECTOR.h"
-
-#include "Geometry.h"
+#include "entity/geometry.h"
 
 struct Geometry::impl
 {

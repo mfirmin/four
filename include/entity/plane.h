@@ -2,24 +2,24 @@
 #define PLANE_H 
 
 #include <vector>
-#include "../math/VECTOR.h"
-#include "Geometry.h"
+#include "vmath.h"
+#include "entity/geometry.h"
 
 class Plane : public Geometry
 {
     public:
 
-        Plane(VECTOR a, VECTOR b);
+        Plane(Vector3f a, Vector3f b);
 
         int init();
 
-        VECTOR getA();
-        VECTOR getB();
+        Vector3f getA();
+        Vector3f getB();
 
-        std::vector<VECTOR> getAsLine();
+        std::vector<Vector3f> getAsLine();
 
-        void setA(VECTOR);
-        void setB(VECTOR);
+        void setA(Vector3f);
+        void setB(Vector3f);
 
         Type getType() { return _type; }
 

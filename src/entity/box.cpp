@@ -2,18 +2,16 @@
 #include <stdlib.h>
 #include <iostream>
 
-#include <vector>
-
-#include "Box.h"
+#include "entity/box.h"
 
 struct Box::impl
 {
 
-    VECTOR sides;
+    Vector3f sides;
     
 };
 
-Box::Box(VECTOR s) 
+Box::Box(Vector3f s) 
 {
     pimpl = new impl();
     pimpl->sides = s;
@@ -24,13 +22,13 @@ int Box::init()
     return 0;
 }
 
-VECTOR Box::getSides()
+Vector3f Box::getSides()
 {
     return pimpl->sides;
 
 }
 
-void Box::setSides(VECTOR s)
+void Box::setSides(Vector3f s)
 {
     pimpl->sides = s;
 }
