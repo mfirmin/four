@@ -10,21 +10,21 @@
 
 
 #include "world/world.h"
-#include "entity/Geometry.h"
-#include "entity/Box.h"
-#include "entity/Cylinder.h"
-#include "entity/Capsule.h"
-#include "entity/Sphere.h"
-#include "entity/Plane.h"
+#include "entity/geometry.h"
+#include "entity/box.h"
+#include "entity/cylinder.h"
+#include "entity/capsule.h"
+#include "entity/sphere.h"
+#include "entity/plane.h"
 
-#include "joint/Joint.h"
-#include "joint/HingeJoint.h"
-#include "character/Character.h"
+#include "joint/joint.h"
+#include "joint/hingejoint.h"
+#include "character/character.h"
 
 #include "vmath.h"
-#include "physics/ODEWrapper.h"
-#include "entity/Entity.h"
-#include "renderer/Renderer.h"
+#include "physics/odewrapper.h"
+#include "entity/entity.h"
+#include "renderer/renderer.h"
 
 
 int main(int argc, char** argv)

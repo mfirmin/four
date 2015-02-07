@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-#include "entity/Sphere.h"
+#include "entity/sphere.h"
 
 struct Sphere::impl
 {

@@ -2,7 +2,7 @@
 #define SPHERE_H 
 
 #include "vmath.h"
-#include "entity/Geometry.h"
+#include "entity/geometry.h"
 
 class Sphere : public Geometry
 {

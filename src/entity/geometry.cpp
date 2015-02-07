@@ -4,7 +4,7 @@
 
 #include "vmath.h"
 
-#include "entity/Geometry.h"
+#include "entity/geometry.h"
 
 struct Geometry::impl
 {

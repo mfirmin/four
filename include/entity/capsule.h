@@ -1,14 +1,14 @@
-#ifndef CYLINDER_H
-#define CYLINDER_H 
+#ifndef CAPSULE_H
+#define CAPSULE_H 
 
 #include "vmath.h"
-#include "entity/Geometry.h"
+#include "entity/geometry.h"
 
-class Cylinder : public Geometry
+class Capsule : public Geometry
 {
     public:
 
-        Cylinder(float r, float h);
+        Capsule(float r, float h);
 
         int init();
 
@@ -24,7 +24,7 @@ class Cylinder : public Geometry
 
         struct impl;
         impl* pimpl;
-        static const Type _type = CYLINDER;
+        static const Type _type = CAPSULE;
 };
 
-#endif // CYLINDER_H 
+#endif // CAPSULE_H 

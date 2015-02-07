@@ -17,10 +17,10 @@ OBJECTS= $(patsubst $(SRCDIR)/%,$(BUILDDIR)/%,$(SOURCES:.$(SRCEXT)=.o))
 LIBOBJS = $(shell find $(LIB) -type f -name *.o)
 
 ifeq ($(UNAME), Darwin)
-	LDFLAGS = -L/opt/X11/lib -L/usr/local/lib -lGLU -lGL -lGLC -lm -lode
+	LDFLAGS = -L/opt/X11/lib -L/usr/local/lib -lGLU -lGL -lm -lode
 endif
 ifeq ($(UNAME), Linux)
-	LDFLAGS = -L/usr/X11R6/lib -lGLU -lGL -lGLC -lm -lode
+	LDFLAGS = -L/usr/X11R6/lib -lGLU -lGL -lm -lode
 endif
 
 GLFWCFLAGS = `pkg-config --cflags glfw3`

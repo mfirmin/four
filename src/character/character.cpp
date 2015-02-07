@@ -214,7 +214,7 @@ int Character::initFromFile(const char* ifname)
 
     std::cout << "Reading Character File: " << ifname << std::endl;
 
-    if (!ifs)
+    if (!ifs) 
     {
         std::cerr << "Couldn't open character file " << ifname << " for reading." << std::endl;
         return -1;

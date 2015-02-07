@@ -2,7 +2,7 @@
 #define BOX_H 
 
 #include "vmath.h"
-#include "entity/Geometry.h"
+#include "entity/geometry.h"
 
 class Box : public Geometry
 {

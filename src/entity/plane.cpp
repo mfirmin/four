@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <iostream>
 
-#include "entity/Plane.h"
+#include "entity/plane.h"
 
 struct Plane::impl
 {

@@ -19,15 +19,15 @@
 
 #include <vector>
 
-#include "renderer/Renderer.h"
+#include "renderer/renderer.h"
 #include "vmath.h"
-#include "entity/Entity.h"
-#include "entity/Box.h"
-#include "entity/Cylinder.h"
-#include "entity/Capsule.h"
-#include "entity/Sphere.h"
-#include "entity/Plane.h"
-#include "entity/Geometry.h"
+#include "entity/entity.h"
+#include "entity/box.h"
+#include "entity/cylinder.h"
+#include "entity/capsule.h"
+#include "entity/sphere.h"
+#include "entity/plane.h"
+#include "entity/geometry.h"
 #include "utils/utils.h"
 #include "world/world.h"
 
