@@ -134,9 +134,9 @@ int Renderer::addWorldToRender(World* w)
     return 0;
 }
 
-int Renderer::addPointLight(Vector3f pos)
+int Renderer::addPointLight(Vector3f pos, Vector3f color)
 {
-	GLfloat light_ambient[] = { .1, .1, .1, 1.0 };
+	GLfloat light_ambient[] = { color.x, color.y, color.z, 1.0 };
 	GLfloat light_diffuse[] = { .7, .7, .7, 1.0 };
 	GLfloat light_specular[] = { 0, 0, 0, 1.0 };
 	GLfloat light_position[] = { pos.x, pos.y, pos.z, 0.0 };

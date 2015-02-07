@@ -13,7 +13,7 @@ class Renderer
 
         int init();
 
-        int addPointLight(Vector3f);
+        int addPointLight(Vector3f, Vector3f c=Vector3f(.1,.1,.1));
         int addWorldToRender(World*);
         void waitForRender();
         int render();
