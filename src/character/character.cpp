@@ -18,6 +18,7 @@
 #include "entity/capsule.h"
 #include "entity/box.h"
 #include "entity/sphere.h"
+#include "controller/controller.h"
 
 class Entity;
 class Joint;
@@ -28,6 +29,7 @@ struct Character::impl
     std::string name;
     std::map<std::string, Entity*> entities;
     std::map<std::string, Joint*> joints;
+    Controller* controller;
 
 };
 
