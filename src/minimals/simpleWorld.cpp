@@ -25,6 +25,7 @@
 #include "physics/odewrapper.h"
 #include "entity/entity.h"
 #include "renderer/renderer.h"
+#include "renderer/GLFWRenderer.h"
 
 
 int main(int argc, char** argv)
@@ -33,7 +34,7 @@ int main(int argc, char** argv)
     float STEPSIZE = 0.0001;
 
     // -- Set up renderer -- //
-    Renderer* r = new Renderer();
+    Renderer* r = new GLFWRenderer();
     r->init();
 
     // -- Set up world 1 -- //
@@ -71,45 +72,18 @@ int main(int argc, char** argv)
 
     world->addCharacter(human);
     
-    
-    World* w2 = new World();
-
-    
-    w2->init();
-
-    Geometry* g2 = new Plane(Vector3f(-50, 0, 0), Vector3f(50, 0, 0));
-    Entity* ge2 = new Entity(std::string("ground"), g2);
-    
-    w2->addEntity(ge2);
-
-    Character* human2 = new Character(std::string("h2"));
-    human2->initFromFile("inputs/characters/human.char");
-
-    
-    w2->addCharacter(human2);
-
-    for (auto it = w2->getEntities().begin(); it != w2->getEntities().end(); it++) {
-        (it)->second->setColor(Vector3f(.1,.5,.1));
-    }
-
-
     float t = 0; 
     float t_frame = 0;
     float frameTime = 1./30.;
 
     r->addWorldToRender(world);
-    r->addWorldToRender(w2);
-    int i = 0;
-    while (i < 1) 
+    while (true) 
     {
         for (t_frame = 0; t_frame < frameTime; t_frame+=STEPSIZE) 
         {
             world->step(STEPSIZE);
-            w2->step(STEPSIZE);
         }
         r->waitForRender();
         r->render();
-//        i++;
     }
-    while (true) {}
 }
