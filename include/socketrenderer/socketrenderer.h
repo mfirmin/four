@@ -2,10 +2,11 @@
 #define SOCKETRENDERER_H 
 
 #include "vmath.h"
+#include "renderer/renderer.h"
 
 class World;
 
-class SocketRenderer 
+class SocketRenderer : public Renderer
 {
     public:
 
@@ -14,7 +15,6 @@ class SocketRenderer
         int init();
 
         int addPointLight(Vector3f, Vector3f c=Vector3f(.1,.1,.1));
-        int addWorldToRender(World*);
         void waitForRender();
         int render();
 

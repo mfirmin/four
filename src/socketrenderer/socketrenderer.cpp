@@ -48,20 +48,30 @@ const float frametime = 1./30.;
 
 struct SocketRenderer::impl {
 
+    /*
     void renderBox(Entity*);
     void renderCylinder(Entity*);
     void renderCapsule(Entity*);
     void renderSphere(Entity*);
     void renderLine(Entity*);
-
-    std::vector<World*> worlds;
-
-	_timeval last;
+    */
 
 };
 
-int SocketRenderer::init()
-{   
+int SocketRenderer::addPointLight(Vector3f pos, Vector3f col) {
+    return 0;
+}
+
+void SocketRenderer::waitForRender() {
+    return;
+}
+
+SocketRenderer::SocketRenderer() : Renderer()  {
+    pimpl = new impl();
+}
+
+int SocketRenderer::init() {   
+
     int sockfd;
 	struct sockaddr_in self;
 	char buffer[MAXBUF];
@@ -104,7 +114,7 @@ int SocketRenderer::init()
     int clientfd;
     struct sockaddr_in client_addr;
     int addrlen=(sizeof(client_addr));
-    /*
+    
 
     clientfd = accept(sockfd, (struct sockaddr*)&client_addr, (socklen_t*)&addrlen);
     // just want our client now. only ever listen to one.
@@ -121,7 +131,11 @@ int SocketRenderer::init()
     printf("done sending!");
 
 	close(clientfd);
-    */
+    
 	return 0;
+}
+
+int SocketRenderer::render() {
+    return 0;
 }
 

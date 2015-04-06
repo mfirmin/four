@@ -26,6 +26,7 @@
 #include "entity/entity.h"
 #include "renderer/renderer.h"
 #include "renderer/GLFWRenderer.h"
+#include "socketrenderer/SocketRenderer.h"
 
 
 int main(int argc, char** argv)
@@ -34,7 +35,7 @@ int main(int argc, char** argv)
     float STEPSIZE = 0.0001;
 
     // -- Set up renderer -- //
-    Renderer* r = new GLFWRenderer();
+    Renderer* r = new SocketRenderer();
     r->init();
 
     // -- Set up world 1 -- //
