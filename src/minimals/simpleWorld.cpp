@@ -78,6 +78,8 @@ int main(int argc, char** argv)
     float frameTime = 1./30.;
 
     r->addWorldToRender(world);
+    r->render();
+    /*
     while (true) 
     {
         for (t_frame = 0; t_frame < frameTime; t_frame+=STEPSIZE) 
@@ -87,4 +89,5 @@ int main(int argc, char** argv)
         r->waitForRender();
         r->render();
     }
+    */
 }
