@@ -151,7 +151,7 @@ int SocketRenderer::render() {
 
     printf("Sending render info...");
     
-    int len = htons(12);
+    int len = htonl(12);
 
     send(pimpl->clientfd, &len, sizeof(int), 0);
     sprintf(buffer, "%s", "{\"rArm\": 50}");
