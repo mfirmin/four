@@ -42,7 +42,7 @@ typedef timespec _timeval;
 #endif
 
 #define MY_PORT		9999
-#define MAXBUF		1024
+#define MAXBUF	    2048	
 #define MAX_CONNECTIONS 5 
 
 const float frametime = 1./30.;
@@ -51,12 +51,12 @@ struct SocketRenderer::impl {
 
     
     void renderBox(Entity*, char*, int&);
-    /*
+    
     void renderCylinder(Entity*, char*, int&);
     void renderCapsule(Entity*, char*, int&);
     void renderSphere(Entity*, char*, int&);
     void renderLine(Entity*, char*, int&);
-    */
+    
     
 
     int checkForConnections(); 
@@ -84,6 +84,39 @@ void SocketRenderer::impl::renderBox(Entity* e, char* buffer, int& len) {
 
     Vector3f pos = e->getPosition();
     len += sprintf(bptr, "\"%s\":{\"type\":\"box\",\"pos\":[%f,%f,%f]},", e->getName().c_str(), pos.x, pos.y, pos.z);
+
+}
+void SocketRenderer::impl::renderCylinder(Entity* e, char* buffer, int& len) {
+
+    char* bptr = &(buffer[len]);
+
+    Vector3f pos = e->getPosition();
+    len += sprintf(bptr, "\"%s\":{\"type\":\"cylinder\",\"pos\":[%f,%f,%f]},", e->getName().c_str(), pos.x, pos.y, pos.z);
+
+}
+void SocketRenderer::impl::renderCapsule(Entity* e, char* buffer, int& len) {
+
+    char* bptr = &(buffer[len]);
+
+    Vector3f pos = e->getPosition();
+    len += sprintf(bptr, "\"%s\":{\"type\":\"capsule\",\"pos\":[%f,%f,%f]},", e->getName().c_str(), pos.x, pos.y, pos.z);
+
+}
+
+void SocketRenderer::impl::renderLine(Entity* e, char* buffer, int& len) {
+
+    char* bptr = &(buffer[len]);
+
+    Vector3f pos = e->getPosition();
+    len += sprintf(bptr, "\"%s\":{\"type\":\"line\",\"pos\":[%f,%f,%f]},", e->getName().c_str(), pos.x, pos.y, pos.z);
+
+}
+void SocketRenderer::impl::renderSphere(Entity* e, char* buffer, int& len) {
+
+    char* bptr = &(buffer[len]);
+
+    Vector3f pos = e->getPosition();
+    len += sprintf(bptr, "\"%s\":{\"type\":\"sphere\",\"pos\":[%f,%f,%f]},", e->getName().c_str(), pos.x, pos.y, pos.z);
 
 }
 
@@ -180,7 +213,6 @@ int SocketRenderer::render() {
                 case Geometry::Type::BOX:
                     pimpl->renderBox(it->second, buffer, len);
                     break;
-                    /*
                 case Geometry::Type::CYLINDER:
                     pimpl->renderCylinder(it->second, buffer, len);
                     break;
@@ -193,7 +225,6 @@ int SocketRenderer::render() {
                 case Geometry::Type::SPHERE:
                     pimpl->renderSphere(it->second, buffer, len);
                     break;
-                    */
                 default:
 //                    std::cerr << "SocketRenderer.cpp: Unknown Entity TYPE: " << it->second->getGeometry()->getType() << std::endl;
                     break;
@@ -205,6 +236,8 @@ int SocketRenderer::render() {
 
     char* bptr = &(buffer[len-1]);
     sprintf(bptr, "}");
+
+//    std::cout << buffer << std::endl;
 
     int msglen = htonl(len);
     send(pimpl->clientfd, &msglen, sizeof(int), 0);
