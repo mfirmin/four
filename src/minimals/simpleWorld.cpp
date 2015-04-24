@@ -27,6 +27,7 @@
 #include "renderer/renderer.h"
 #include "renderer/GLFWRenderer.h"
 #include "socketrenderer/SocketRenderer.h"
+#include "controller/controller.h"
 
 
 int main(int argc, char** argv)
@@ -35,15 +36,17 @@ int main(int argc, char** argv)
     float STEPSIZE = 0.0001;
 
     // -- Set up renderer -- //
-    Renderer* r = new SocketRenderer();
+    /*
+    Renderer* r = new GLFWRenderer();
     r->init();
+    */
 
     // -- Set up world 1 -- //
     World* world = new World();
 
     world->init();
 
-    r->addPointLight(Vector3f(10,10,10), Vector3f(.1,.1,.1));
+//    r->addPointLight(Vector3f(10,10,10), Vector3f(.1,.1,.1));
 
     /*
 
@@ -77,9 +80,15 @@ int main(int argc, char** argv)
     float t_frame = 0;
     float frameTime = 1./30.;
 
-    r->addWorldToRender(world);
+//    r->addWorldToRender(world);
+
+    Controller* c = new Controller();
+    c->init();
+
+
+    c->sendTestMessage();
     
-    int framestorender = 3000;
+    /*
     while (true) 
     {
         for (t_frame = 0; t_frame < frameTime; t_frame+=STEPSIZE) 
@@ -91,5 +100,6 @@ int main(int argc, char** argv)
         framestorender--;
         if (framestorender == 0) { break; }
     }
+    */
     
 }

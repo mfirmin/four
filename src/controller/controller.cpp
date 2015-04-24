@@ -9,16 +9,19 @@
 #include <fstream>
 
 #include "controller/controller.h"
+#include "socket/socket.h"
 
 
-struct Controller::impl
+struct Controller::impl 
 {
 
+    Socket* s;
 
 };
 
 Controller::Controller() 
 {
+
     pimpl = new impl();
 
 }
@@ -26,10 +29,20 @@ Controller::Controller()
 
 int Controller::init()
 {
+
+    pimpl->s = new Socket();
+
+    pimpl->s->init();
+
     return 0;
 }
 
-int Controller::setTorques()
-{
-    return -1;
+int Controller::sendTestMessage() {
+    char buff[1024];
+
+    int len = sprintf(buff, "{\"hello\":\"world\"}");
+    pimpl->s->sendMessage(buff, len);
+
+    return 0;
 }
+
