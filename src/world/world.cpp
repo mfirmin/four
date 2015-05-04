@@ -46,6 +46,8 @@ struct World::impl
  //   std::vector<Entity*> entities;
 //    std::vector<Joint*> joints;
 
+    std::string name;
+
     std::map<std::string, Entity*> entities;
     std::map<std::string, Joint*> joints;
 
@@ -57,9 +59,11 @@ struct World::impl
 
 };
 
-World::World() 
+World::World(std::string name) 
 {
     pimpl = new impl();
+
+    pimpl->name = name;
 }
 
 int World::init()
@@ -72,6 +76,10 @@ int World::init()
     return 0;
 
 
+}
+
+std::string World::getName() {
+    return pimpl->name;
 }
 
 int World::addCharacter(Character* c) 

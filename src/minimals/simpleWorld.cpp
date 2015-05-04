@@ -42,9 +42,11 @@ int main(int argc, char** argv)
     */
 
     // -- Set up world 1 -- //
-    World* world = new World();
+    /*
+    World* world = new World("sampleWorld");
 
     world->init();
+    */
 
 //    r->addPointLight(Vector3f(10,10,10), Vector3f(.1,.1,.1));
 
@@ -66,6 +68,7 @@ int main(int argc, char** argv)
     w->addCharacter(snowman);
     */
 
+    /*
     Geometry* g = new Plane(Vector3f(-50, 0, 0), Vector3f(50, 0, 0));
     Entity* ge = new Entity(std::string("ground"), g);
     
@@ -79,6 +82,7 @@ int main(int argc, char** argv)
     float t = 0; 
     float t_frame = 0;
     float frameTime = 1./30.;
+    */
 
 //    r->addWorldToRender(world);
 
@@ -86,7 +90,7 @@ int main(int argc, char** argv)
     c->init();
 
 
-    c->sendTestMessage();
+    c->handleMessage(c->recvMessage());
     
     /*
     while (true) 

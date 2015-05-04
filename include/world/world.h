@@ -3,6 +3,7 @@
 
 #include "vmath.h"
 #include <map>
+#include <string>
 
 class Entity;
 class Joint;
@@ -12,13 +13,14 @@ class World
 {
     public:
 
-        World();
+        World(std::string);
 
         int init();
         int addEntity(Entity* e);
         int addCharacter(Character* c);
         int addJoint(Joint* j);
         int addPointLight(Vector3f pos);
+        std::string getName();
         const std::map<std::string, Entity*>& getEntities();
         void go(float stepsize);
         void step(float stepsize);

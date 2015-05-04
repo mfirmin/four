@@ -29,7 +29,7 @@ class Socket
         int init();
 
         int sendMessage(char* buffer, int length);
-//        int recvMessage();
+        char* recvMessage();
 
     private:
         static bool INITIALIZED;

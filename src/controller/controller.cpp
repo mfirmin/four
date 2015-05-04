@@ -10,13 +10,15 @@
 
 #include "controller/controller.h"
 #include "socket/socket.h"
+#include "world/world.h"
 
 
 struct Controller::impl 
 {
 
+    std::map<std::string, World*> worlds;
     Socket* s;
-
+    int handleMessage(char*);
 };
 
 Controller::Controller() 
@@ -37,12 +39,42 @@ int Controller::init()
     return 0;
 }
 
-int Controller::sendTestMessage() {
-    char buff[1024];
+const std::map<std::string, World*>& Controller::getWorlds()
+{
+    return pimpl->worlds;
+}
 
-    int len = sprintf(buff, "{\"hello\":\"world\"}");
-    pimpl->s->sendMessage(buff, len);
+int Controller::initWorld(char* wname) {
+
+    World* world = new World("sampleWorld");
+    world->init();
+
+    pimpl->worlds.insert(std::pair<std::string, World*>(std::string(wname), world));
+
+    printf("%s", pimpl->worlds.find(std::string(wname))->second->getName().c_str());
 
     return 0;
+
+}
+
+int Controller::handleMessage(char* msg) {
+
+
+    if (strcmp(msg, "init") == 0) {
+        char* wname = recvMessage();
+        this->initWorld(wname);
+    }
+
+
+    delete [] msg;
+
+    return 0;
+
+}
+
+char* Controller::recvMessage() {
+    char* msg = pimpl->s->recvMessage();
+
+    return msg;
 }
 

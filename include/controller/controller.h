@@ -18,6 +18,8 @@
 #include <iostream>
 #include <fstream>
 
+class World;
+
 
 class Controller
 {
@@ -27,7 +29,12 @@ class Controller
 
         int init();
 
-        int sendTestMessage();
+        int initWorld(char* name);
+
+        const std::map<std::string, World*>& getWorlds();
+
+        char* recvMessage();
+        int handleMessage(char* msg);
 
     private:
 

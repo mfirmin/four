@@ -108,6 +108,19 @@ int Socket::impl::checkForConnections() {
     return clientfd;
 }
 
+char* Socket::recvMessage() {
+    int msglen; 
+    int bytesRecvd = recv(pimpl->clientfd, &msglen, sizeof(int), 0);
+
+    msglen = ntohl(msglen);
+
+    char* buff = new char[msglen];
+
+    recv(pimpl->clientfd, buff, msglen*sizeof(char), 0);
+
+    return buff;
+}
+
 int Socket::sendMessage(char* buffer, int len) {
 
     int msglen = htonl(len);
