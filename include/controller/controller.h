@@ -29,7 +29,7 @@ class Controller
 
         int init();
 
-        int initWorld(char* name);
+        World* initWorld(char* name);
 
         const std::map<std::string, World*>& getWorlds();
 

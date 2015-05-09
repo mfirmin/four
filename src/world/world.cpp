@@ -72,14 +72,30 @@ int World::init()
     pimpl->simulator = ODEWrapper();
     pimpl->simulator.init();
 
-
     return 0;
-
-
 }
 
 std::string World::getName() {
     return pimpl->name;
+}
+
+std::string World::getInitialStateAsJSONString() {
+    int MAXBUF = 2048;
+    char bufffer[MAXBUF];
+    int len = 0;
+
+    len += sprintf(buffer, "{\"entities\":");
+
+    char* bptr;
+    for (auto it = pimpl->entities.begin(); it != pimpl->entities.end(); it++) {
+        Entity* e = it->second;
+        bptr = &(buffer[len]);
+        len += e->getInitialStateAsJSONString(bptr);
+    }
+    bptr = &(buffer[len]);
+    len += sprintf(bptr, "}");
+    printf("%s\n", buffer);
+    return std::string("initial world state");
 }
 
 int World::addCharacter(Character* c) 

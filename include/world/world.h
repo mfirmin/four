@@ -13,7 +13,7 @@ class World
 {
     public:
 
-        World(std::string);
+        World(std::string name);
 
         int init();
         int addEntity(Entity* e);
@@ -24,6 +24,7 @@ class World
         const std::map<std::string, Entity*>& getEntities();
         void go(float stepsize);
         void step(float stepsize);
+        std::string getInitialStateAsJSONString();
 
     private:
 

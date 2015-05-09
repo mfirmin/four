@@ -106,7 +106,6 @@ void Entity::setPosition(Vector3f pos)
 Vector3f Entity::getVelocity()
 {
     return pimpl->vel;
-
 }
 void Entity::setVelocity(Vector3f vel)
 {
