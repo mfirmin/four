@@ -7,6 +7,7 @@
 #include "entity/entity.h"
 #include "vmath.h"
 #include "utils/utils.h"
+#include "entity/geometry.h"
 
 struct Entity::impl
 {
@@ -45,6 +46,24 @@ Entity::Entity(std::string n, Geometry* g, float m, Vector3f p, Vector3f v, Quat
 int Entity::init()
 {
     return 0;
+}
+
+int Entity::getInitialStateAsJSONString(char* buffer) {
+
+    int len = 0;
+    Vector3f pos = pimpl->pos;
+    Quaternion<float> rot = pimpl->rot;
+    len += sprintf(buffer, "\"%s\":{\"pos\":[%f,%f,%f],\"rot\":[%f,%f,%f,%f],", pimpl->name.c_str(), pos.x, pos.y, pos.z, rot.w, rot.v.x, rot.v.y, rot.v.z);
+
+    char* bptr = &(buffer[len]);
+    len += pimpl->geom->getInitialStateAsJSONString(bptr);
+
+    bptr = &(buffer[len]);
+
+    len += sprintf(bptr, "},");
+
+    return len;
+
 }
 
 std::string Entity::getName()

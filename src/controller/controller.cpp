@@ -63,13 +63,18 @@ int Controller::handleMessage(char* msg) {
         char* wname = recvMessage();
         World* world = this->initWorld(wname);
         std::string state = world->getInitialStateAsJSONString();
-        printf("%s\n", state.c_str());
+        sendMessage(state.c_str());
     }
 
     delete [] msg;
 
     return 0;
 
+}
+
+int Controller::sendMessage(const char* msg) {
+    int res = pimpl->s->sendMessage(msg, strlen(msg));
+    return res;
 }
 
 char* Controller::recvMessage() {

@@ -12,6 +12,8 @@ class Cylinder : public Geometry
 
         int init();
 
+        int getInitialStateAsJSONString(char*);
+
         void setRadius(float);
         void setHeight(float);
 

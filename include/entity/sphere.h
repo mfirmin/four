@@ -12,6 +12,8 @@ class Sphere : public Geometry
 
         int init();
 
+        int getInitialStateAsJSONString(char*);
+
         float getRadius();
 
         void setRadius(float);

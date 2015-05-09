@@ -12,6 +12,7 @@ class Box : public Geometry
 
         int init();
 
+        int getInitialStateAsJSONString(char*);
 
         Vector3f getSides();
 

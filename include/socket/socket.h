@@ -28,7 +28,7 @@ class Socket
 
         int init();
 
-        int sendMessage(char* buffer, int length);
+        int sendMessage(const char* buffer, int length);
         char* recvMessage();
 
     private:

@@ -89,6 +89,17 @@ int main(int argc, char** argv)
     Controller* c = new Controller();
     c->init();
 
+    World* world = c->initWorld((char*)"default");
+
+    Geometry* g = new Plane(Vector3f(-50, 0, 0), Vector3f(50, 0, 0));
+    Entity* ge = new Entity(std::string("ground"), g);
+    
+    world->addEntity(ge);
+
+    Character* human = new Character(std::string("h"));
+    human->initFromFile("inputs/characters/human.char");
+
+    world->addCharacter(human);
 
     c->handleMessage(c->recvMessage());
     

@@ -34,6 +34,8 @@ class Controller
         const std::map<std::string, World*>& getWorlds();
 
         char* recvMessage();
+        int sendMessage(const char* buffer);
+
         int handleMessage(char* msg);
 
     private:

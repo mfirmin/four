@@ -80,22 +80,27 @@ std::string World::getName() {
 }
 
 std::string World::getInitialStateAsJSONString() {
-    int MAXBUF = 2048;
-    char bufffer[MAXBUF];
+    int MAXBUF = 10000;
+    char buffer[MAXBUF];
     int len = 0;
 
-    len += sprintf(buffer, "{\"entities\":");
+    len += sprintf(buffer, "{\"entities\":{");
 
     char* bptr;
+    if (pimpl->entities.size() == 0) {
+        std::cerr << "Need at least one entity to initialize a world..." << std::endl;
+        return std::string("-1");
+    }
     for (auto it = pimpl->entities.begin(); it != pimpl->entities.end(); it++) {
         Entity* e = it->second;
         bptr = &(buffer[len]);
         len += e->getInitialStateAsJSONString(bptr);
     }
+
+    len = len-1;
     bptr = &(buffer[len]);
-    len += sprintf(bptr, "}");
-    printf("%s\n", buffer);
-    return std::string("initial world state");
+    len += sprintf(bptr, "}}");
+    return std::string(buffer);
 }
 
 int World::addCharacter(Character* c) 
