@@ -36,6 +36,7 @@ class Entity
         int getID();
 
         int getInitialStateAsJSONString(char* buffer);
+        int getCurrentStateAsJSONString(char* buffer);
 
 
         // Stylistic Properties 

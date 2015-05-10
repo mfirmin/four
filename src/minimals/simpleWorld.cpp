@@ -104,8 +104,9 @@ int main(int argc, char** argv)
 
     world->addCharacter(human);
     
+    c->go();
 
-    c->handleMessage(c->recvMessage());
+//    c->handleMessage(c->recvMessage());
     
     /*
     while (true) 

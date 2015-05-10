@@ -64,6 +64,12 @@ int Controller::handleMessage(char* msg) {
         World* world = this->initWorld(wname);
         std::string state = world->getInitialStateAsJSONString();
         sendMessage(state.c_str());
+    } else if (strcmp(msg, "requestFrame") == 0) {
+        char* wname = recvMessage();
+
+        World* world = pimpl->worlds.find(wname)->second;
+        std::string state = world->getCurrentStateAsJSONString();
+        sendMessage(state.c_str());
     }
 
     delete [] msg;
@@ -81,5 +87,12 @@ char* Controller::recvMessage() {
     char* msg = pimpl->s->recvMessage();
 
     return msg;
+}
+
+int Controller::go() {
+
+    while(true) {
+        this->handleMessage(this->recvMessage());
+    }
 }
 

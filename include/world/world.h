@@ -25,6 +25,7 @@ class World
         void go(float stepsize);
         void step(float stepsize);
         std::string getInitialStateAsJSONString();
+        std::string getCurrentStateAsJSONString();
 
     private:
 

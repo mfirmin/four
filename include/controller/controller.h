@@ -38,6 +38,9 @@ class Controller
 
         int handleMessage(char* msg);
 
+        // start the main loop
+        int go();
+
     private:
 
         struct impl;
