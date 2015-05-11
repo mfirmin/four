@@ -112,11 +112,14 @@ char* Socket::recvMessage() {
     int msglen; 
     int bytesRecvd = recv(pimpl->clientfd, &msglen, sizeof(int), 0);
 
+
     msglen = ntohl(msglen);
 
-    char* buff = new char[msglen];
+    char* buff = new char[2*msglen];
 
-    recv(pimpl->clientfd, buff, msglen*sizeof(char), 0);
+    bytesRecvd = recv(pimpl->clientfd, buff, msglen*sizeof(char), 0);
+
+    buff[msglen] = '\0';
 
     return buff;
 }
@@ -125,13 +128,8 @@ int Socket::sendMessage(const char* buffer, int len) {
 
     int msglen = htonl(len);
     int sent = send(pimpl->clientfd, &msglen, sizeof(int), 0);
-    std::cout << sent << std::endl;
     int bytesSent = send(pimpl->clientfd, buffer, len*sizeof(char), 0);
 
-    std::cout << bytesSent << std::endl;
-
-
-    
     return bytesSent;
 }
 

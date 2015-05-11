@@ -67,7 +67,22 @@ int Controller::handleMessage(char* msg) {
     } else if (strcmp(msg, "requestFrame") == 0) {
         char* wname = recvMessage();
 
-        World* world = pimpl->worlds.find(wname)->second;
+        auto it = pimpl->worlds.find(wname);
+        if (it == pimpl->worlds.end()) {
+            std::cout << "Unknown world with name " << wname << std::endl;
+            return -1;
+        }
+        World* world = it->second;
+
+        float STEPSIZE = 0.0001;
+        float t = 0; 
+        float t_frame = 0;
+        float frameTime = 1./30.;
+        for (t_frame = 0; t_frame < frameTime; t_frame+=STEPSIZE) 
+        {
+            world->step(STEPSIZE);
+        }
+
         std::string state = world->getCurrentStateAsJSONString();
         sendMessage(state.c_str());
     }
