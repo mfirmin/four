@@ -127,7 +127,9 @@ char* Socket::recvMessage() {
 int Socket::sendMessage(const char* buffer, int len) {
 
     int msglen = htonl(len);
+
     int sent = send(pimpl->clientfd, &msglen, sizeof(int), 0);
+
     int bytesSent = send(pimpl->clientfd, buffer, len*sizeof(char), 0);
 
     return bytesSent;

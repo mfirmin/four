@@ -92,12 +92,12 @@ int main(int argc, char** argv)
     World* world = c->initWorld((char*)"default");
     
     
-    /*
+    
     Geometry* g = new Plane(Vector3f(-50, 0, 0), Vector3f(50, 0, 0));
     Entity* ge = new Entity(std::string("ground"), g);
     
     world->addEntity(ge);
-    */
+    
     
     
 

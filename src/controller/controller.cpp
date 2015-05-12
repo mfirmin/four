@@ -84,6 +84,7 @@ int Controller::handleMessage(char* msg) {
         }
 
         std::string state = world->getCurrentStateAsJSONString();
+
         sendMessage(state.c_str());
     }
 
