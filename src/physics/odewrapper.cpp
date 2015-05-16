@@ -280,6 +280,25 @@ void ODEWrapper::setHingeJointTorque(std::string jointName, float torque)
 
 }
 
+void ODEWrapper::updateEntity(std::string entity_name, Vector3f pos, Vector3f vel, Quaternion<float> rot, Vector3f ang_vel) {
+
+    dBodyID bID = pimpl->bodies.find(entity_name)->second;
+    if (bID == NULL) { return; }
+    dBodySetPosition(bID, pos.x, pos.y, pos.z);
+    dQuaternion q; 
+    q[0] = rot.v.x;
+    q[1] = rot.v.y;
+    q[2] = rot.v.z;
+    q[3] = rot.w;
+    dBodySetQuaternion(bID, q);
+    //std::cout << R << std::endl;
+    //std::cout << ang.x << " " << ang.y << " " << ang.z << std::endl;
+
+	dBodySetLinearVel(bID, vel.x, vel.y, vel.z);
+	dBodySetAngularVel(bID, ang_vel.x,ang_vel.y, ang_vel.z);
+    return;
+}
+
 /*
 
 int main(int argc, char** argv)

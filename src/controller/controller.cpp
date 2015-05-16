@@ -86,6 +86,18 @@ int Controller::handleMessage(char* msg) {
         std::string state = world->getCurrentStateAsJSONString();
 
         sendMessage(state.c_str());
+    } else if (strcmp(msg, "reset") == 0) {
+        char* wname = recvMessage();
+
+        auto it = pimpl->worlds.find(wname);
+        if (it == pimpl->worlds.end()) {
+            std::cout << "Unknown world with name " << wname << std::endl;
+            return -1;
+        }
+        World* world = it->second;
+        world->reset();
+
+
     }
 
     delete [] msg;

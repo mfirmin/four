@@ -17,24 +17,30 @@ class Entity
 
         // Physical Properties
 
-        std::string getName();
-        void setName(std::string);
+        // GETTERS //
         Vector3f getPosition();
-        void setPosition(Vector3f);
         Vector3f getVelocity();
-        void setVelocity(Vector3f);
         Quaternion<float> getRotationAsQuaternion();
-        void setRotation(Quaternion<float>);
         Vector3f getOmega();
-        void setOmega(Vector3f);
         Geometry* getGeometry();
-        void setGeometry(Geometry*);
         float getMass();
-        void setMass(float);
-
-        void setID(int);
         int getID();
 
+        std::string getName();
+
+        // SETTERS //
+        void setPosition(Vector3f);
+        void setVelocity(Vector3f);
+        void setRotation(Quaternion<float>);
+        void setOmega(Vector3f);
+        void setGeometry(Geometry*);
+        void setMass(float);
+        void setID(int);
+
+        void setName(std::string);
+
+
+        // State Info //
         int getInitialStateAsJSONString(char* buffer);
         int getCurrentStateAsJSONString(char* buffer);
 

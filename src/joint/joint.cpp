@@ -92,6 +92,9 @@ Vector3f Joint::getAngleLimitMin() {
 Vector3f Joint::getAngleLimitMax() {
     return pimpl->ANGLE_LIMIT_MAX;
 }
+void Joint::setAngle(Vector3f ang) {
+    pimpl->ang = ang;
+}
 void Joint::addTorque(Vector3f t) {
     pimpl->currTorque += t;
 }

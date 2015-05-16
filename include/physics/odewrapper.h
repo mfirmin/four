@@ -23,6 +23,9 @@ class ODEWrapper
 
         void setHingeJointTorque(std::string jointName, float t);
 
+        void updateEntity(std::string entity_name, Vector3f pos, Vector3f vel, Quaternion<float> rot, Vector3f ang_vel);
+//        void updateJoint(std::string joint_name, Vector3f angle);
+
         void step(float);
 
 

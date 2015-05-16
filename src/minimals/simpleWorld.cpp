@@ -105,6 +105,8 @@ int main(int argc, char** argv)
     human->initFromFile("inputs/characters/human.char");
 
     world->addCharacter(human);
+
+    world->saveState();
     
     c->go();
 

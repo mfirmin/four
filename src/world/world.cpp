@@ -39,6 +39,24 @@ typedef timeval _timeval;
 typedef timespec _timeval;
 #endif
 
+struct E_state {
+    Vector3f pos;
+    Vector3f vel;
+    Quaternion<float> rot;
+    Vector3f ang_vel;
+};
+
+struct J_state {
+    Vector3f ang;
+};
+
+struct State {
+
+    std::map<std::string, E_state> entities;
+    std::map<std::string, J_state> joints;
+
+};
+
 struct World::impl
 {
 
@@ -56,7 +74,7 @@ struct World::impl
     void updateEntities();
     void setSimulationTorques();
 
-
+    std::vector<State> stateList;
 };
 
 World::World(std::string name) 
@@ -66,8 +84,7 @@ World::World(std::string name)
     pimpl->name = name;
 }
 
-int World::init()
-{
+int World::init() {
 
     pimpl->simulator = ODEWrapper();
     pimpl->simulator.init();
@@ -253,12 +270,71 @@ void World::step(float stepsize)
 
 }
 
+int World::reset() {
+    return this->loadState(0);
+}
+
+
+int World::loadState(int which) {
+    if (pimpl->stateList.size() <= which) {
+        std::cerr << "Cannot load state " << which << " for world " << pimpl->name << "." << std::endl;
+        return -1;
+    }
+
+    State* s = &(pimpl->stateList.at(which));
+
+    for (auto it = s->entities.begin(); it != s->entities.end(); it++) {
+
+        std::string name = it->first;
+        Entity* set = pimpl->entities.find(name)->second;
+        set->setPosition(it->second.pos);
+        set->setVelocity(it->second.vel);
+        set->setRotation(it->second.rot);
+        set->setOmega(it->second.ang_vel);
+
+        pimpl->simulator.updateEntity(name, set->getPosition(), set->getVelocity(), set->getRotationAsQuaternion(), set->getOmega());
+
+    }
+    // is this automatically determined based on the part?
+    /*
+    for (auto it = s->joints.begin(); it != s->joints.end(); it++) {
+
+        std::string name = it->first;
+        Joint* set = pimpl->joints.find(name)->second;
+        set->setAngle(it->second.ang);
+
+    }
+    */
+
+    return 0;
+
+}
+
+
+void World::saveState() {
+    State state;
+    for (auto it = pimpl->entities.begin(); it != pimpl->entities.end(); it++) {
+        E_state e;
+        e.pos = it->second->getPosition();
+        e.rot = it->second->getRotationAsQuaternion();
+        e.vel = it->second->getVelocity();
+        e.ang_vel = it->second->getOmega();
+        state.entities.insert(std::pair<std::string, E_state>(it->second->getName(), e));
+    }
+    for (auto it = pimpl->joints.begin(); it != pimpl->joints.end(); it++) {
+        J_state j;
+        j.ang = it->second->getJointAngle();
+        state.joints.insert(std::pair<std::string, J_state>(it->second->getName(), j));
+    }
+    pimpl->stateList.push_back(state);
+}
+
 void World::go(float stepsize)
 {
+    this->saveState();
     while (true)
     {
         pimpl->simulator.step(stepsize);
-
         pimpl->updateEntities();
     }
 }

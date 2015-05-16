@@ -41,6 +41,8 @@ class Joint
         void resetCurrTorque();
         void setName(std::string);
 
+        void setAngle(Vector3f);
+
         void setID(int);
         int getID();
 
