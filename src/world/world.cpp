@@ -72,6 +72,7 @@ struct World::impl
     ODEWrapper simulator;
 
     void updateEntities();
+    void updateJoints();
     void setSimulationTorques();
 
     std::vector<State> stateList;
@@ -139,6 +140,16 @@ std::string World::getCurrentStateAsJSONString() {
         len += e->getCurrentStateAsJSONString(bptr);
     }
 
+    len = len-1; // get rid of ','
+    bptr = &(buffer[len]);
+    len += sprintf(bptr, "},\"joints\":{");
+
+    for (auto it = pimpl->joints.begin(); it != pimpl->joints.end(); it++) {
+        Joint* j = it->second;
+        bptr = &(buffer[len]);
+        len += j->getCurrentStateAsJSONString(bptr);
+    }
+
     len = len-1;
     bptr = &(buffer[len]);
     len += sprintf(bptr, "}}");
@@ -195,8 +206,7 @@ int World::addEntity(Entity* e)
     return 0;
 }
 
-int World::addJoint(Joint* j)
-{
+int World::addJoint(Joint* j) {
 
     switch(j->getType()) {
         case Joint::Type::HINGE:
@@ -210,27 +220,33 @@ int World::addJoint(Joint* j)
     return 0;
 }
 
-void World::impl::updateEntities()
-{
+void World::impl::updateEntities() {
 
-    for (auto it = entities.begin(); it != entities.end(); it++)
-    {
+    for (auto it = entities.begin(); it != entities.end(); it++) {
+
         if ((*it).second->getGeometry()->getType() == Geometry::Type::PLANE) { continue; }
+
         (*it).second->setPosition(simulator.getBodyPositionFromName((*it).second->getName()));
         (*it).second->setRotation(simulator.getBodyRotationFromName((*it).second->getName()));
     }
 
 }
 
+void World::impl::updateJoints() {
 
-const std::map<std::string, Entity*>& World::getEntities()
-{
+    for (auto it = joints.begin(); it != joints.end(); it++) {
+        (*it).second->setAngle(simulator.getJointAngleFromName((*it).second->getName()));
+    }
+}
+
+
+const std::map<std::string, Entity*>& World::getEntities() {
     return pimpl->entities;
 
 }
 
-void World::impl::setSimulationTorques() 
-{
+void World::impl::setSimulationTorques() {
+
     for (auto it = joints.begin(); it != joints.end(); it++) {
 
         Vector3f torque = it->second->getCurrTorque();
@@ -266,6 +282,7 @@ void World::step(float stepsize)
     pimpl->simulator.step(stepsize);
 
     pimpl->updateEntities();
+    pimpl->updateJoints();
     //pimpl->frameTime+= stepsize;
 
 }

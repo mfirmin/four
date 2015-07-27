@@ -23,13 +23,12 @@ struct ODEWrapper::impl
     dJointGroupID jointgroup;
 
     std::map<std::string, dBodyID> bodies;
-//    std::vector<dBodyID> bodies;
-//    std::vector<dJointID> joints;
     std::map<std::string, dJointID> joints;
 
     dBodyID addBody(ODEWrapper*, dGeomID&, Vector3f, Vector3f, Quaternion<float>, Vector3f);
 
     dBodyID getBodyIDFromName(std::string name) { return bodies.find(name)->second; }
+    dJointID getJointIDFromName(std::string name) { return joints.find(name)->second; }
 
     static void nearCallback(void*, dGeomID, dGeomID);
 };
@@ -73,21 +72,6 @@ dBodyID ODEWrapper::impl::addBody(ODEWrapper*, dGeomID&, Vector3f pos, Vector3f 
 {
     dBodyID id = dBodyCreate(world);
     dBodySetPosition(id, pos.x, pos.y, pos.z);
-
-
-
-    /*
-    std::cout << ang[0] << " " << ang[3] << " " << ang[6] << std::endl;
-    std::cout << ang[1] << " " << ang[4] << " " << ang[7] << std::endl;
-    std::cout << ang[2] << " " << ang[5] << " " << ang[8] << std::endl;
-    */
-
-    /*
-    std::cout << R[0] << " " << R[4] << " " << R[8] << std::endl;
-    std::cout << R[1] << " " << R[5] << " " << R[9] << std::endl;
-    std::cout << R[2] << " " << R[6] << " " << R[10] << std::endl;
-    */
-
     
     dQuaternion q; 
     q[0] = ang.v.x;
@@ -244,14 +228,12 @@ void nearCallback(void *data, dGeomID o1, dGeomID o2)
 	}
 }
 
-Vector3f ODEWrapper::getBodyPositionFromName(std::string name)
-{
+Vector3f ODEWrapper::getBodyPositionFromName(std::string name) {
     const dReal* pos = dBodyGetPosition(pimpl->getBodyIDFromName(name));
     return Vector3f(pos[0], pos[1], pos[2]);
 }
 
-Quaternion<float> ODEWrapper::getBodyRotationFromName(std::string name)
-{
+Quaternion<float> ODEWrapper::getBodyRotationFromName(std::string name) {
 	const dReal* R = dGeomGetRotation(dBodyGetFirstGeom(pimpl->getBodyIDFromName(name)));
 
     dQuaternion q_ode;
@@ -260,6 +242,14 @@ Quaternion<float> ODEWrapper::getBodyRotationFromName(std::string name)
 
 
     return q;
+}
+
+Vector3f ODEWrapper::getJointAngleFromName(std::string name) {
+
+    dReal ang = dJointGetHingeAngle(pimpl->getJointIDFromName(name));
+
+    return Vector3f(ang, 0, 0);
+
 }
 
 void ODEWrapper::step(float timestep) 

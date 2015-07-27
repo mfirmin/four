@@ -8,8 +8,6 @@
  * 
  * Description: controls the simulation, receives/sends commands to the server through a Socket.
  *
- *
- *
  */
 
 #include "vmath.h"

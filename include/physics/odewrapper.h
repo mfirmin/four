@@ -21,6 +21,9 @@ class ODEWrapper
         Vector3f getBodyPositionFromName(std::string name);
         Quaternion<float> getBodyRotationFromName(std::string name);
 
+        Vector3f getJointAngleFromName(std::string name);
+
+
         void setHingeJointTorque(std::string jointName, float t);
 
         void updateEntity(std::string entity_name, Vector3f pos, Vector3f vel, Quaternion<float> rot, Vector3f ang_vel);

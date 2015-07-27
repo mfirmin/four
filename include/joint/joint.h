@@ -28,6 +28,8 @@ class Joint
         Entity* getParent();
         Entity* getChild();
 
+        int getCurrentStateAsJSONString(char* buffer);
+
         // Physical Properties
 
         std::string getName();

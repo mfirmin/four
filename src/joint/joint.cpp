@@ -46,6 +46,17 @@ Joint::Joint(std::string n, Entity* e1, Entity* e2, Vector3f pos, Vector3f ang, 
 
 }
 
+int Joint::getCurrentStateAsJSONString(char* buffer) {
+
+    int len = 0;
+    Vector3f pos = pimpl->pos;
+    Vector3f ang = pimpl->ang;
+    len += sprintf(buffer, "\"%s\":{\"pos\":[%f,%f,%f],\"rot\":[%f,%f,%f]},", pimpl->name.c_str(), pos.x, pos.y, pos.z, ang.x, ang.y, ang.z);
+
+    return len;
+
+}
+
 void Joint::resetCurrTorque() {
     this->setCurrTorque(Vector3f(0,0,0));
 }
