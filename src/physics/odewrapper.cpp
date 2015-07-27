@@ -247,8 +247,14 @@ Quaternion<float> ODEWrapper::getBodyRotationFromName(std::string name) {
 Vector3f ODEWrapper::getJointAngleFromName(std::string name) {
 
     dReal ang = dJointGetHingeAngle(pimpl->getJointIDFromName(name));
-
     return Vector3f(ang, 0, 0);
+
+}
+
+Vector3f ODEWrapper::getJointOmegaFromName(std::string name) {
+
+    dReal omega = dJointGetHingeAngleRate(pimpl->getJointIDFromName(name));
+    return Vector3f(omega, 0, 0);
 
 }
 

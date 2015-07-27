@@ -17,6 +17,7 @@ struct Joint::impl
     Vector3f pos;
     // Specified in Euler axis angles (degrees).
     Vector3f ang;
+    Vector3f omega;
     Vector3f ANGLE_LIMIT_MIN;
     Vector3f ANGLE_LIMIT_MAX;
 
@@ -51,7 +52,8 @@ int Joint::getCurrentStateAsJSONString(char* buffer) {
     int len = 0;
     Vector3f pos = pimpl->pos;
     Vector3f ang = pimpl->ang;
-    len += sprintf(buffer, "\"%s\":{\"pos\":[%f,%f,%f],\"rot\":[%f,%f,%f]},", pimpl->name.c_str(), pos.x, pos.y, pos.z, ang.x, ang.y, ang.z);
+    Vector3f omega = pimpl->omega;
+    len += sprintf(buffer, "\"%s\":{\"pos\":[%f,%f,%f],\"rot\":[%f,%f,%f],\"omega\":[%f,%f,%f]},", pimpl->name.c_str(), pos.x, pos.y, pos.z, ang.x, ang.y, ang.z, omega.x, omega.y, omega.z);
 
     return len;
 
@@ -105,6 +107,9 @@ Vector3f Joint::getAngleLimitMax() {
 }
 void Joint::setAngle(Vector3f ang) {
     pimpl->ang = ang;
+}
+void Joint::setOmega(Vector3f omega) {
+    pimpl->omega = omega;
 }
 void Joint::addTorque(Vector3f t) {
     pimpl->currTorque += t;

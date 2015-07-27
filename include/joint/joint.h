@@ -44,6 +44,7 @@ class Joint
         void setName(std::string);
 
         void setAngle(Vector3f);
+        void setOmega(Vector3f);
 
         void setID(int);
         int getID();

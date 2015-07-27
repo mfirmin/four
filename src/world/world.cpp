@@ -236,6 +236,7 @@ void World::impl::updateJoints() {
 
     for (auto it = joints.begin(); it != joints.end(); it++) {
         (*it).second->setAngle(simulator.getJointAngleFromName((*it).second->getName()));
+        (*it).second->setOmega(simulator.getJointOmegaFromName((*it).second->getName()));
     }
 }
 
