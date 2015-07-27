@@ -28,6 +28,8 @@ class Joint
         Entity* getParent();
         Entity* getChild();
 
+        int getCurrentStateAsJSONString(char* buffer);
+
         // Physical Properties
 
         std::string getName();
@@ -40,6 +42,9 @@ class Joint
         void setCurrTorque(Vector3f);
         void resetCurrTorque();
         void setName(std::string);
+
+        void setAngle(Vector3f);
+        void setOmega(Vector3f);
 
         void setID(int);
         int getID();

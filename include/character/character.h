@@ -9,6 +9,7 @@
 
 class Entity;
 class Joint;
+class Controller;
 
 class Character
 {

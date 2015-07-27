@@ -22,6 +22,10 @@ int Box::init()
     return 0;
 }
 
+int Box::getInitialStateAsJSONString(char* buffer) {
+    return sprintf(buffer, "\"type\":\"box\",\"sides\":[%f,%f,%f]", pimpl->sides.x, pimpl->sides.y, pimpl->sides.z);
+}
+
 Vector3f Box::getSides()
 {
     return pimpl->sides;

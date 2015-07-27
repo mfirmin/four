@@ -24,6 +24,10 @@ int Capsule::init()
     return 0;
 }
 
+int Capsule::getInitialStateAsJSONString(char* buffer) {
+    return sprintf(buffer, "\"type\":\"capsule\",\"radius\":%f,\"height\":%f", pimpl->radius, pimpl->height);
+}
+
 float Capsule::getRadius()
 {
     return pimpl->radius;

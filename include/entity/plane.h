@@ -13,6 +13,8 @@ class Plane : public Geometry
 
         int init();
 
+        int getInitialStateAsJSONString(char*);
+
         Vector3f getA();
         Vector3f getB();
 

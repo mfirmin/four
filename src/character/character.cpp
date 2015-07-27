@@ -18,6 +18,7 @@
 #include "entity/capsule.h"
 #include "entity/box.h"
 #include "entity/sphere.h"
+#include "controller/controller.h"
 
 class Entity;
 class Joint;
@@ -28,6 +29,7 @@ struct Character::impl
     std::string name;
     std::map<std::string, Entity*> entities;
     std::map<std::string, Joint*> joints;
+    Controller* controller;
 
 };
 
@@ -79,7 +81,6 @@ Entity* readEntity(std::ifstream& ifs) {
             // READ GEOMETRY
             std::string type;
             ifs >> type;
-            std::cout << "Type: " << type << std::endl;
             if (type.compare("SPHERE") == 0) {
                 float r;
                 ifs >> r;
@@ -106,7 +107,6 @@ Entity* readEntity(std::ifstream& ifs) {
         }
         else if (block.compare("POSITION") == 0) {
             ifs >> pos.x >> pos.y >> pos.z;
-            std::cout << "position: " << pos << std::endl;
         }
         else if (block.compare("ROTATION") == 0) {
             // READ ROT
@@ -114,21 +114,17 @@ Entity* readEntity(std::ifstream& ifs) {
             ifs >> x >> y >> z;
             rot = rot.fromEulerAngles(x,y,z);
 
-            std::cout << "rotation: " << rot << std::endl;
         }
         else if (block.compare("VELOCITY") == 0) {
             ifs >> vel.x >> vel.y >> vel.z;
-            std::cout << "velocity: " << vel << std::endl;
         }
         else if (block.compare("MASS") == 0) {
             // READ MASS
             ifs >> mass;
-            std::cout << "mass: " << mass << std::endl;
         }
 
     } while (block.compare(";") != 0);
 
-    std::cout << "pushing entity..." << std::endl;
     Entity* e = new Entity(name, g, mass, pos, vel, rot);
 
     return e;
@@ -157,42 +153,35 @@ Joint* Character::readJoint(std::ifstream& ifs) {
 
     Joint* j;
 
-    std::cout << "Reading joint " << name << std::endl;
     do {
         ifs >> block;
         if (block.compare("TYPE") == 0) {
             // READ JOINT TYPE 
             ifs >> type;
-            std::cout << "type: " << type << std::endl;
         }
         else if (block.compare("POSITION") == 0) {
             ifs >> pos.x >> pos.y >> pos.z;
-            std::cout << "pos: " << pos << std::endl;
         }
         else if (block.compare("ANGLE") == 0) {
             ifs >> angle.x >> angle.y >> angle.z;
             angle.x = utils::deg2rad(angle.x);
             angle.y = utils::deg2rad(angle.y);
             angle.z = utils::deg2rad(angle.z);
-            std::cout << "angle: " << angle << std::endl;
         }
         else if (block.compare("AXIS") == 0) {
             ifs >> axis.x >> axis.y >> axis.z;
-            std::cout << "axis: " << axis << std::endl;
         }
         else if (block.compare("ANGLE_MAX") == 0) {
             ifs >> angle_max.x >> angle_max.y >> angle_max.z;
             angle_max.x = utils::deg2rad(angle_max.x);
             angle_max.y = utils::deg2rad(angle_max.y);
             angle_max.z = utils::deg2rad(angle_max.z);
-            std::cout << "angle_max: " << angle_max << std::endl;
         }
         else if (block.compare("ANGLE_MIN") == 0) {
             ifs >> angle_min.x >> angle_min.y >> angle_min.z;
             angle_min.x = utils::deg2rad(angle_min.x);
             angle_min.y = utils::deg2rad(angle_min.y);
             angle_min.z = utils::deg2rad(angle_min.z);
-            std::cout << "angle_min: " << angle_min << std::endl;
         }
 
     } while (block.compare(";") != 0); 
@@ -242,7 +231,6 @@ int Character::initFromFile(const char* ifname)
     ifs >> i;
 
     for (int p = 0; p < i; p++) {
-        std::cout << "Reading entity..." << std::endl;
         Entity* e = readEntity(ifs);
         if (e == NULL) {
             return -3;
@@ -258,7 +246,6 @@ int Character::initFromFile(const char* ifname)
     ifs >> i;
 
     for (int p = 0; p < i; p++) {
-        std::cout << "Reading joint..." << std::endl;
         Joint* j = readJoint(ifs);
         if (j == NULL) {
             return -3;

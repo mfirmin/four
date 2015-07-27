@@ -24,6 +24,10 @@ int Plane::init()
     return 0;
 }
 
+int Plane::getInitialStateAsJSONString(char* buffer) {
+    return sprintf(buffer, "\"type\":\"plane\",\"A\":[%f,%f,%f],\"B\":[%f,%f,%f]", pimpl->A.x, pimpl->A.y, pimpl->A.z,pimpl->B.x, pimpl->B.y, pimpl->B.z);
+}
+
 std::vector<Vector3f> Plane::getAsLine()
 {
     std::vector<Vector3f> ret = std::vector<Vector3f>();

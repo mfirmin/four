@@ -24,6 +24,10 @@ int Cylinder::init()
     return 0;
 }
 
+int Cylinder::getInitialStateAsJSONString(char* buffer) {
+    return sprintf(buffer, "\"type\":\"cylinder\",\"radius\":%f,\"height\":%f", pimpl->radius, pimpl->height);
+}
+
 float Cylinder::getRadius()
 {
     return pimpl->radius;
