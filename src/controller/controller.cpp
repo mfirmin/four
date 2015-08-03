@@ -8,6 +8,8 @@
 #include <iostream>
 #include <fstream>
 
+#include "rapidjson/document.h"
+
 #include "controller/controller.h"
 #include "socket/socket.h"
 #include "world/world.h"
@@ -25,7 +27,6 @@ Controller::Controller() {
     pimpl = new impl();
 
 }
-
 
 int Controller::init() {
 
@@ -96,8 +97,36 @@ int Controller::handleMessage(char* msg) {
         }
         World* world = it->second;
         world->reset();
+    } else if (strcmp(msg, "torques") == 0) {
+        char* torques_JSON = recvMessage();
 
+        rapidjson::Document* document = new rapidjson::Document(); 
 
+        if (document->ParseInsitu(torques_JSON).HasParseError()) {
+            printf("%s\n", "parse error!");
+            return -1;
+        }
+
+        rapidjson::Value::MemberIterator wname = document->FindMember("wname");
+        if (wname == document->MemberEnd()) {
+            printf("%s\n", "no wname member when parsing torques json!");
+            return -1;
+        }
+
+        auto it = pimpl->worlds.find(wname->value.GetString());
+
+        if (it == pimpl->worlds.end()) {
+            std::cout << "Unknown world" << std::endl; 
+            return -1;
+        }
+
+        World* world = it->second;
+        rapidjson::Value::MemberIterator data = document->FindMember("data");
+        if (data == document->MemberEnd()) {
+            printf("%s\n", "no data member when parsing torques json!");
+            return -1;
+        }
+        world->setTorques(data);
     }
 
     delete [] msg;

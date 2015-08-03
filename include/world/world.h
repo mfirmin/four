@@ -4,10 +4,12 @@
 #include "vmath.h"
 #include <map>
 #include <string>
+#include "rapidjson/document.h"
 
 class Entity;
 class Joint;
 class Character;
+
 
 class World
 {
@@ -25,6 +27,8 @@ class World
         void step(float stepsize);
         std::string getInitialStateAsJSONString();
         std::string getCurrentStateAsJSONString();
+
+        void setTorques(rapidjson::Value::MemberIterator);
 
         void go(float stepsize);
 

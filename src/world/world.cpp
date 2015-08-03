@@ -31,6 +31,8 @@
 #include "character/character.h"
 #include "renderer/renderer.h"
 
+#include "rapidjson/document.h"
+
 
 #ifdef __APPLE__
 typedef timeval _timeval;
@@ -156,14 +158,21 @@ std::string World::getCurrentStateAsJSONString() {
     return std::string(buffer);
 }
 
-int World::addCharacter(Character* c) 
-{
-    for (auto it = c->getEntities().begin(); it != c->getEntities().end(); it++)
-    {
+void World::setTorques(rapidjson::Value::MemberIterator data) {
+
+    for (rapidjson::Value::ConstMemberIterator itr = data->value.MemberBegin(); itr != data->value.MemberEnd(); ++itr) {
+        Joint* j = pimpl->joints.find(itr->name.GetString())->second;
+        j->setCurrTorque(Vector3f(0,0,itr->value.GetDouble()));
+    }
+
+}
+
+int World::addCharacter(Character* c) {
+
+    for (auto it = c->getEntities().begin(); it != c->getEntities().end(); it++) {
         this->addEntity(it->second);
     }
-    for (auto it = c->getJoints().begin(); it != c->getJoints().end(); it++)
-    {
+    for (auto it = c->getJoints().begin(); it != c->getJoints().end(); it++) {
         this->addJoint(it->second);
     }
     return 0;
@@ -270,7 +279,7 @@ void World::impl::setSimulationTorques() {
                 break;
         }
 
-        it->second->resetCurrTorque();
+//        it->second->resetCurrTorque();
 
     }
 
